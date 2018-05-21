@@ -18,4 +18,14 @@ class MediaCleaner {
         }
         return sortedMediaList.minus(mediaToBeRemoved)
     }
+
+    fun removeUnsupportedMedia(importMediaList: List<Media>): List<Media> {
+        val mediaToBeRemoved = ArrayList<Media>()
+        for(media in importMediaList) {
+            if(media.type == TraktMediaType.UNDEFINED) {
+                mediaToBeRemoved += media
+            }
+        }
+        return importMediaList.minus(mediaToBeRemoved)
+    }
 }

@@ -22,5 +22,17 @@ internal class MediaCleanerTest {
         assertTrue(expectedMediaList.sorted() == actualMediaList.sorted())
     }
 
+    @Test
+    fun removeUnsupportedMedia() {
+        val mediaCleaner = MediaCleaner()
+        val validMedia = Media("ttid01", "Movie One", LocalDateTime.of(2016, Month.MARCH, 16, 10, 0), TraktMediaType.MOVIE, 8, LocalDateTime.of(2016, Month.JUNE, 16, 12, 0))
+        val invalidMedia = Media("ttid02", "Movie Two", LocalDateTime.of(2016, Month.MARCH, 17, 10, 0), TraktMediaType.UNDEFINED, 8, LocalDateTime.of(2016, Month.MARCH, 17, 12, 0))
+
+        val expectedMediaList = listOf(validMedia)
+        val actualMediaList = mediaCleaner.removeUnsupportedMedia(listOf(validMedia, invalidMedia))
+
+        assertTrue(expectedMediaList.sorted() == actualMediaList.sorted())
+    }
+
 
 }
