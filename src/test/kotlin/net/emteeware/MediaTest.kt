@@ -9,7 +9,7 @@ internal class MediaTest {
 
     @Test
     fun `media creation`() {
-        val testMovie = Media("tt2473822", "Elementary: Flight Risk",  LocalDateTime.of(2014, Month.JANUARY, 18, 22, 15), TraktMediaType.EPISODE, 7, LocalDateTime.of(2014, Month.JANUARY, 18, 22, 15))
+        val testMovie = Media("tt2473822", "Elementary: Flight Risk", LocalDateTime.of(2014, Month.JANUARY, 18, 22, 15), TraktMediaType.EPISODE, 7, LocalDateTime.of(2014, Month.JANUARY, 18, 22, 15))
         assertEquals("Media(imdbId=tt2473822, name=Elementary: Flight Risk, viewDate=2014-01-18T22:15, type=EPISODE, rating=7, ratingDate=2014-01-18T22:15)", testMovie.toString())
     }
 }
