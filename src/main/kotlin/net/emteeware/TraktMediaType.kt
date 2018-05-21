@@ -1,5 +1,5 @@
 package net.emteeware
 
 enum class TraktMediaType {
-    MOVIE, EPISODE
+    MOVIE, EPISODE, UNDEFINED
 }
