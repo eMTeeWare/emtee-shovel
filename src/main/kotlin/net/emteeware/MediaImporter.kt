@@ -29,7 +29,7 @@ class MediaImporter {
                     dropCounter++
                 }
             }
-            println("$dropCounter media dropped during import")
+            println("$dropCounter unrated media dropped during import")
         } catch (e: Exception) {
             val message = e.localizedMessage
             println("An error occurred while reading csv file: $message")
