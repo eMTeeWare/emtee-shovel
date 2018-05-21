@@ -2,16 +2,16 @@ package net.emteeware
 
 import java.io.BufferedReader
 import java.io.FileReader
-import java.net.URL
+import java.net.URI
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class MediaImporter {
-    fun importMediaList(fileToBeImported: URL): List<Media> {
+    fun importMediaList(fileToBeImported: URI): List<Media> {
         val mediaList = ArrayList<Media>()
         try {
-            val fileReader = BufferedReader(FileReader(fileToBeImported.file))
+            val fileReader = BufferedReader(FileReader(fileToBeImported.path))
             fileReader.readLine()
             val readMedia = fileReader.readLines()
             for(line in readMedia) {

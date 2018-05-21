@@ -40,7 +40,7 @@ internal class MediaImporterTest {
                 7,
                 LocalDateTime.of(2014, Month.MARCH, 15, 0 ,0)
         )
-        val actualList = mediaImporter.importMediaList(this::class.java.classLoader.getResource("SampleMovies.csv"))
+        val actualList = mediaImporter.importMediaList(this::class.java.classLoader.getResource("SampleMovies.csv").toURI())
         println("expectedList: $expectedList")
         println("actualList: $actualList")
         assertTrue(expectedList.sorted() == actualList.sorted())
