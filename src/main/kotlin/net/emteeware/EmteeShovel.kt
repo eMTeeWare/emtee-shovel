@@ -1,6 +1,8 @@
 package net.emteeware
 
 import java.net.URI
+import java.time.LocalDate
+import java.time.Month
 
 fun main(args: Array<String>) {
     println("Shoveling data …")
@@ -17,5 +19,9 @@ fun main(args: Array<String>) {
     val removedDuplicateMediaCount = remainingMediaCount - importMediaList.size
     println("$removedDuplicateMediaCount duplicate media removed")
     remainingMediaCount -= removedDuplicateMediaCount
+
+    val watchTimeGuessimator = WatchTimeGuessimator()
+    importMediaList = watchTimeGuessimator.askUserByDate(importMediaList, LocalDate.of(2018, Month.APRIL, 19), LocalDate.now())
+    importMediaList.filter { m -> m.watchTimeSet }.forEach(::println)
 }
 
