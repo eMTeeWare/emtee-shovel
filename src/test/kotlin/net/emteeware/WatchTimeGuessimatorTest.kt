@@ -3,6 +3,11 @@ package net.emteeware
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.io.PrintStream
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
 
@@ -16,7 +21,15 @@ internal class WatchTimeGuessimatorTest {
         val inScopeMovieUpdated = Media("tts", "Out of Scope", LocalDateTime.of(2014, Month.APRIL, 1, watchHour, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), true)
         val watchTimeGuessimator = WatchTimeGuessimator(listOf(outOfScopeMovie, inScopeMovie))
 
-        // TODO: Refactor WathTimeGuessimator so that it can be tested without console in/out
+        val inContent = watchHour.toString()
+        val inputStream = ByteArrayInputStream(inContent.toByteArray())
 
+        System.setIn(inputStream)
+
+        watchTimeGuessimator.askUserByDate(LocalDate.of(2012, Month.APRIL, 1), LocalDate.of(2016, Month.APRIL, 1))
+
+        System.setIn(System.`in`)
+
+        assertTrue(watchTimeGuessimator.mediaList.sorted() == listOf(outOfScopeMovie, inScopeMovieUpdated).sorted())
     }
 }
