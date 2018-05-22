@@ -1,12 +1,8 @@
 package net.emteeware
 
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.PrintStream
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
@@ -31,5 +27,24 @@ internal class WatchTimeGuessimatorTest {
         System.setIn(System.`in`)
 
         assertTrue(watchTimeGuessimator.mediaList.sorted() == listOf(outOfScopeMovie, inScopeMovieUpdated).sorted())
+    }
+    @Test
+    fun askUserByType() {
+        val watchHour = 17
+        val episode = Media("ttepisode", "Episode", LocalDateTime.of(2004, Month.APRIL, 1, 0, 0), TraktMediaType.EPISODE, 3, LocalDateTime.of(2004, Month.APRIL, 1, 0, 0))
+        val movie = Media("ttmovie", "Movie", LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0))
+        val movieUpdated = Media("ttmovie", "Movie", LocalDateTime.of(2014, Month.APRIL, 1, watchHour, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), true)
+        val watchTimeGuessimator = WatchTimeGuessimator(listOf(movie, episode))
+
+        val inContent = watchHour.toString()
+        val inputStream = ByteArrayInputStream(inContent.toByteArray())
+
+        System.setIn(inputStream)
+
+        watchTimeGuessimator.askUserByType(TraktMediaType.MOVIE)
+
+        System.setIn(System.`in`)
+
+        assertTrue(watchTimeGuessimator.mediaList.sorted() == listOf(episode, movieUpdated).sorted())
     }
 }
