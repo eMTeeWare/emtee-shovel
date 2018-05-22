@@ -20,11 +20,11 @@ fun main(args: Array<String>) {
     println("$removedDuplicateMediaCount duplicate media removed")
     remainingMediaCount -= removedDuplicateMediaCount
 
-    val watchTimeGuessimator = WatchTimeGuessimator()
-    importMediaList = watchTimeGuessimator.askUserByDate(importMediaList, LocalDate.of(2018, Month.APRIL, 19), LocalDate.now())
+    val watchTimeGuessimator = WatchTimeGuessimator(importMediaList)
+    importMediaList = watchTimeGuessimator.askUserByDate(LocalDate.of(2018, Month.APRIL, 19), LocalDate.now())
     importMediaList.filter { m -> m.watchTimeSet }.forEach(::println)
 
-    importMediaList = watchTimeGuessimator.askUserByType(importMediaList, TraktMediaType.MOVIE)
+    importMediaList = watchTimeGuessimator.askUserByType(TraktMediaType.MOVIE)
     importMediaList.filter { m -> m.watchTimeSet }.forEach(::println)
 
 
