@@ -23,5 +23,10 @@ fun main(args: Array<String>) {
     val watchTimeGuessimator = WatchTimeGuessimator()
     importMediaList = watchTimeGuessimator.askUserByDate(importMediaList, LocalDate.of(2018, Month.APRIL, 19), LocalDate.now())
     importMediaList.filter { m -> m.watchTimeSet }.forEach(::println)
+
+    importMediaList = watchTimeGuessimator.askUserByType(importMediaList, TraktMediaType.MOVIE)
+    importMediaList.filter { m -> m.watchTimeSet }.forEach(::println)
+
+
 }
 
