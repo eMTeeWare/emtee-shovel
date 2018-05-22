@@ -1,5 +1,6 @@
 package net.emteeware
 
+import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -32,11 +33,13 @@ class WatchTimeGuessimator {
         while (finishingHour == null) {
             try {
                 finishingHour = readLine()!!.toInt()
+                media.viewDate = LocalDateTime.of(media.viewDate.toLocalDate(), LocalTime.of(finishingHour, 0))
+                media.watchTimeSet = true
             } catch (n: NumberFormatException) {
+                finishingHour = null
+            } catch (d: DateTimeException) {
                 finishingHour = null
             }
         }
-        media.viewDate = LocalDateTime.of(media.viewDate.toLocalDate(), LocalTime.of(finishingHour, 0))
-        media.watchTimeSet = true
     }
 }
