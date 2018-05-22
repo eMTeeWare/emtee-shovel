@@ -35,10 +35,13 @@ class WatchTimeGuessimator {
                 finishingHour = readLine()!!.toInt()
                 media.viewDate = LocalDateTime.of(media.viewDate.toLocalDate(), LocalTime.of(finishingHour, 0))
                 media.watchTimeSet = true
-            } catch (n: NumberFormatException) {
-                finishingHour = null
-            } catch (d: DateTimeException) {
-                finishingHour = null
+            } catch (e: Exception) {
+                when (e) {
+                    is NumberFormatException, is DateTimeException -> {
+                        finishingHour = null
+                    }
+                    else -> throw e
+                }
             }
         }
     }
