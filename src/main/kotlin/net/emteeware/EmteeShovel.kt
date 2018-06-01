@@ -2,12 +2,13 @@ package net.emteeware
 
 import java.net.URI
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.Month
 
 fun main(args: Array<String>) {
     println("Shoveling data …")
     val mediaImporter = MediaImporter()
-    var importMediaList = mediaImporter.importMediaList(URI(args[0]))
+    var importMediaList = mediaImporter.importMediaList(URI(args[0]), LocalDateTime.of(2018, Month.APRIL, 21, 22, 4))
     var remainingMediaCount = importMediaList.size
     println("$remainingMediaCount media imported")
     val mediaCleaner = MediaCleaner()
