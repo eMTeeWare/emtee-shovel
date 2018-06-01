@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 class MediaImporter {
     fun importMediaList(fileToBeImported: URI): List<Media> {
         val mediaList = ArrayList<Media>()
-        var dropCounter = 0
+        var droppedUnratedMediaCounter = 0
         try {
             val fileReader = BufferedReader(FileReader(fileToBeImported.path))
             fileReader.readLine()
@@ -26,10 +26,10 @@ class MediaImporter {
                 if (mediaData[4] != "") {
                     mediaList += Media(mediaData[0], mediaData[2], LocalDateTime.from(LocalDate.parse(mediaData[1], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()), mediaType, Integer.parseInt(mediaData[4]), LocalDateTime.from(LocalDate.parse(mediaData[5], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()))
                 } else {
-                    dropCounter++
+                    droppedUnratedMediaCounter++
                 }
             }
-            println("$dropCounter unrated media dropped during import")
+            println("$droppedUnratedMediaCounter unrated media dropped during import")
         } catch (e: Exception) {
             val message = e.localizedMessage
             println("An error occurred while reading csv file: $message")
