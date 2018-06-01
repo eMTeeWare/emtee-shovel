@@ -40,7 +40,10 @@ internal class MediaImporterTest {
                 7,
                 LocalDateTime.of(2014, Month.MARCH, 17, 0, 0)
         )
-        val actualList = mediaImporter.importMediaList(this::class.java.classLoader.getResource("SampleMoviesWithUnratedMedia.csv").toURI(), LocalDateTime.of(2018, Month.APRIL, 21, 22, 4))
+
+        val importFile = this::class.java.classLoader.getResource("SampleMoviesWithUnratedMedia.csv").toURI()
+        val importUntil = LocalDateTime.of(2018, Month.APRIL, 21, 22, 4)
+        val actualList = mediaImporter.importMediaList(importFile, importUntil)
         assertTrue(expectedList.sorted() == actualList.sorted())
 
     }
@@ -71,7 +74,10 @@ internal class MediaImporterTest {
                 LocalDateTime.of(2014, Month.MARCH, 15, 0, 0)
         )
 
-        val actualList = mediaImporter.importMediaList(this::class.java.classLoader.getResource("SampleMovies.csv").toURI(), LocalDateTime.of(2014, Month.MARCH, 16, 22, 4))
+        val importFile = this::class.java.classLoader.getResource("SampleMovies.csv").toURI()
+        val importUntil = LocalDateTime.of(2014, Month.MARCH, 16, 22, 4)
+        val actualList = mediaImporter.importMediaList(importFile, importUntil)
+
         assertTrue(expectedList.sorted() == actualList.sorted())
 
     }
