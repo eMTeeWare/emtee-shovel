@@ -8,7 +8,9 @@ import java.time.Month
 fun main(args: Array<String>) {
     println("Shoveling data …")
     val mediaImporter = MediaImporter()
-    var importMediaList = mediaImporter.importMediaList(URI(args[0]), LocalDateTime.of(2018, Month.APRIL, 21, 22, 4))
+    val endDateOfMediaToBeImported = LocalDateTime.of(2018, Month.APRIL, 21, 22, 4)
+    val fileToBeImported = URI(args[0])
+    var importMediaList = mediaImporter.importMediaList(fileToBeImported, endDateOfMediaToBeImported)
     var remainingMediaCount = importMediaList.size
     println("$remainingMediaCount media imported")
     val mediaCleaner = MediaCleaner()
