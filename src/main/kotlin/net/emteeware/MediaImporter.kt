@@ -12,6 +12,12 @@ class MediaImporter {
         val mediaList = ArrayList<Media>()
         var droppedUnratedMediaCounter = 0
         var droppedAlreadyCheckedInMediaCounter = 0
+        val MEDIA_IMDB_ID_COLUMN = 0
+        val MEDIA_WATCH_DATE_COLUMN = 1
+        val MEDIA_TITLE_COLUMN = 2
+        val MEDIA_TYPE_COLUMN = 3
+        val MEDIA_RATING_COLUMN = 4
+        val MEDIA_RATING_DATE_COLUMN = 5
         try {
             val fileReader = BufferedReader(FileReader(fileToBeImported.path))
             fileReader.readLine()
@@ -19,15 +25,22 @@ class MediaImporter {
             for (line in readMedia) {
                 val mediaData = line.split(';')
                 var mediaType = TraktMediaType.UNDEFINED
-                if (mediaData[3] == "movie") {
+                if (mediaData[MEDIA_TYPE_COLUMN] == "movie") {
                     mediaType = TraktMediaType.MOVIE
-                } else if (mediaData[3] == "tvEpisode") {
+                } else if (mediaData[MEDIA_TYPE_COLUMN] == "tvEpisode") {
                     mediaType = TraktMediaType.EPISODE
                 }
-                if (mediaData[4] != "") {
-                    val watchTime = LocalDateTime.from(LocalDate.parse(mediaData[1], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay())
+                if (mediaData[MEDIA_RATING_COLUMN] != "") {
+                    val watchTime = LocalDateTime.from(LocalDate.parse(mediaData[MEDIA_WATCH_DATE_COLUMN], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay())
                     if(watchTime.isBefore(beginningOfTraktCheckIns)) {
-                        mediaList += Media(mediaData[0], mediaData[2], watchTime, mediaType, Integer.parseInt(mediaData[4]), LocalDateTime.from(LocalDate.parse(mediaData[5], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()))
+                        mediaList += Media(
+                                mediaData[MEDIA_IMDB_ID_COLUMN],
+                                mediaData[MEDIA_TITLE_COLUMN],
+                                watchTime,
+                                mediaType,
+                                Integer.parseInt(mediaData[MEDIA_RATING_COLUMN]),
+                                LocalDateTime.from(LocalDate.parse(mediaData[MEDIA_RATING_DATE_COLUMN], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay())
+                        )
                     } else {
                         droppedAlreadyCheckedInMediaCounter++
                     }
