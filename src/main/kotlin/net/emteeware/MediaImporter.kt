@@ -32,6 +32,10 @@ class MediaImporter {
                     mediaType = TraktMediaType.EPISODE
                 }
                 if (mediaData[MEDIA_RATING_COLUMN] != "") {
+                    var runningTime = 0
+                    if(mediaData[MEDIA_RUNTIME_COLUMN] != "") runningTime = Integer.parseInt(mediaData[MEDIA_RUNTIME_COLUMN])
+                    if(runningTime == 0 && mediaType == TraktMediaType.EPISODE) runningTime = 45
+                    if(runningTime == 0 && mediaType == TraktMediaType.MOVIE) runningTime = 125
                     val watchTime = LocalDateTime.from(LocalDate.parse(mediaData[MEDIA_WATCH_DATE_COLUMN], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay())
                     if(watchTime.isBefore(beginningOfTraktCheckIns)) {
                         mediaList += Media(
@@ -41,7 +45,7 @@ class MediaImporter {
                                 mediaType,
                                 Integer.parseInt(mediaData[MEDIA_RATING_COLUMN]),
                                 LocalDateTime.from(LocalDate.parse(mediaData[MEDIA_RATING_DATE_COLUMN], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()),
-                                Integer.parseInt(mediaData[MEDIA_RUNTIME_COLUMN])
+                                runningTime
                         )
                     } else {
                         droppedAlreadyCheckedInMediaCounter++
