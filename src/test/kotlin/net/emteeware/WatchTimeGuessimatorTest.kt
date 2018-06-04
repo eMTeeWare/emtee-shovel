@@ -12,9 +12,9 @@ internal class WatchTimeGuessimatorTest {
     @Test
     fun askUserByDate() {
         val watchHour = 17
-        val outOfScopeMovie = Media("ttoos", "Out of Scope", LocalDateTime.of(2004, Month.APRIL, 1, 0, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2004, Month.APRIL, 1, 0, 0))
-        val inScopeMovie = Media("tts", "Out of Scope", LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0))
-        val inScopeMovieUpdated = Media("tts", "Out of Scope", LocalDateTime.of(2014, Month.APRIL, 1, watchHour, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), true)
+        val outOfScopeMovie = Media("ttoos", "Out of Scope", LocalDateTime.of(2004, Month.APRIL, 1, 0, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2004, Month.APRIL, 1, 0, 0), 100)
+        val inScopeMovie = Media("tts", "Out of Scope", LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), 100)
+        val inScopeMovieUpdated = Media("tts", "Out of Scope", LocalDateTime.of(2014, Month.APRIL, 1, watchHour, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), 100, true)
         val watchTimeGuessimator = WatchTimeGuessimator(listOf(outOfScopeMovie, inScopeMovie))
 
         val inContent = watchHour.toString()
@@ -31,9 +31,9 @@ internal class WatchTimeGuessimatorTest {
     @Test
     fun askUserByType() {
         val watchHour = 17
-        val episode = Media("ttepisode", "Episode", LocalDateTime.of(2004, Month.APRIL, 1, 0, 0), TraktMediaType.EPISODE, 3, LocalDateTime.of(2004, Month.APRIL, 1, 0, 0))
-        val movie = Media("ttmovie", "Movie", LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0))
-        val movieUpdated = Media("ttmovie", "Movie", LocalDateTime.of(2014, Month.APRIL, 1, watchHour, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), true)
+        val episode = Media("ttepisode", "Episode", LocalDateTime.of(2004, Month.APRIL, 1, 0, 0), TraktMediaType.EPISODE, 3, LocalDateTime.of(2004, Month.APRIL, 1, 0, 0), 100)
+        val movie = Media("ttmovie", "Movie", LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), 100)
+        val movieUpdated = Media("ttmovie", "Movie", LocalDateTime.of(2014, Month.APRIL, 1, watchHour, 0), TraktMediaType.MOVIE, 3, LocalDateTime.of(2014, Month.APRIL, 1, 0, 0), 100, true)
         val watchTimeGuessimator = WatchTimeGuessimator(listOf(movie, episode))
 
         val inContent = watchHour.toString()

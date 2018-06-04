@@ -18,6 +18,7 @@ class MediaImporter {
         val MEDIA_TYPE_COLUMN = 3
         val MEDIA_RATING_COLUMN = 4
         val MEDIA_RATING_DATE_COLUMN = 5
+        val MEDIA_RUNTIME_COLUMN = 6
         try {
             val fileReader = BufferedReader(FileReader(fileToBeImported.path))
             fileReader.readLine()
@@ -39,7 +40,8 @@ class MediaImporter {
                                 watchTime,
                                 mediaType,
                                 Integer.parseInt(mediaData[MEDIA_RATING_COLUMN]),
-                                LocalDateTime.from(LocalDate.parse(mediaData[MEDIA_RATING_DATE_COLUMN], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay())
+                                LocalDateTime.from(LocalDate.parse(mediaData[MEDIA_RATING_DATE_COLUMN], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()),
+                                Integer.parseInt(mediaData[MEDIA_RUNTIME_COLUMN])
                         )
                     } else {
                         droppedAlreadyCheckedInMediaCounter++
