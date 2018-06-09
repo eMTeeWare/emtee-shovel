@@ -1,6 +1,7 @@
 package net.emteeware
 
-import java.io.BufferedReader
+import org.apache.commons.csv.CSVFormat
+import org.apache.commons.csv.CSVRecord
 import java.io.FileReader
 import java.net.URI
 import java.time.LocalDate
@@ -12,46 +13,33 @@ class MediaImporter {
         val mediaList = ArrayList<Media>()
         var droppedUnratedMediaCounter = 0
         var droppedAlreadyCheckedInMediaCounter = 0
-        val MEDIA_IMDB_ID_COLUMN = 0
-        val MEDIA_WATCH_DATE_COLUMN = 1
-        val MEDIA_TITLE_COLUMN = 2
-        val MEDIA_TYPE_COLUMN = 3
-        val MEDIA_RATING_COLUMN = 4
-        val MEDIA_RATING_DATE_COLUMN = 5
-        val MEDIA_RUNTIME_COLUMN = 6
+
         try {
-            val fileReader = BufferedReader(FileReader(fileToBeImported.path))
-            fileReader.readLine()
-            val readMedia = fileReader.readLines()
-            for (line in readMedia) {
-                val mediaData = line.split(';')
-                var mediaType = TraktMediaType.UNDEFINED
-                if (mediaData[MEDIA_TYPE_COLUMN] == "movie") {
-                    mediaType = TraktMediaType.MOVIE
-                } else if (mediaData[MEDIA_TYPE_COLUMN] == "tvEpisode") {
-                    mediaType = TraktMediaType.EPISODE
-                }
-                if (mediaData[MEDIA_RATING_COLUMN] != "") {
-                    var runningTime = 0
-                    if(mediaData[MEDIA_RUNTIME_COLUMN] != "") runningTime = Integer.parseInt(mediaData[MEDIA_RUNTIME_COLUMN])
-                    if(runningTime == 0 && mediaType == TraktMediaType.EPISODE) runningTime = 45
-                    if(runningTime == 0 && mediaType == TraktMediaType.MOVIE) runningTime = 125
-                    val watchTime = LocalDateTime.from(LocalDate.parse(mediaData[MEDIA_WATCH_DATE_COLUMN], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay())
-                    if(watchTime.isBefore(beginningOfTraktCheckIns)) {
-                        mediaList += Media(
-                                mediaData[MEDIA_IMDB_ID_COLUMN],
-                                mediaData[MEDIA_TITLE_COLUMN],
-                                watchTime,
-                                mediaType,
-                                Integer.parseInt(mediaData[MEDIA_RATING_COLUMN]),
-                                LocalDateTime.from(LocalDate.parse(mediaData[MEDIA_RATING_DATE_COLUMN], DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()),
-                                runningTime
-                        )
-                    } else {
-                        droppedAlreadyCheckedInMediaCounter++
+            val inReader = FileReader(fileToBeImported.path)
+            val records : Iterable<CSVRecord> = CSVFormat.EXCEL.withDelimiter(';').withFirstRecordAsHeader().parse(inReader)
+            for(record in records) {
+                // TODO: this shit has to be refactored out to a mediaCollection container, but is here for the moment to make the tests run
+                var runtime: Int
+                when {
+                    LocalDateTime.from(LocalDate.parse(record.get("Created"), DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()).isAfter(beginningOfTraktCheckIns) -> droppedAlreadyCheckedInMediaCounter++
+                    record.get("Your Rating") == "" -> droppedUnratedMediaCounter++
+                    else -> {
+                        runtime = when {
+                            record.get("Runtime") == "" && parseMediaType(record.get("Title Type")) == TraktMediaType.MOVIE -> 125
+                            record.get("Runtime") == "" && parseMediaType(record.get("Title Type")) == TraktMediaType.EPISODE -> 45
+                            else -> Integer.parseInt(record.get("Runtime"))
+                        }
+                        mediaList.add(Media(
+                                record.get("Const"),
+                                record.get("Title"),
+                                LocalDateTime.from(LocalDate.parse(record.get("Created"), DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()),
+                                parseMediaType(record.get("Title Type")),
+                                Integer.parseInt(record.get("Your Rating")),
+                                LocalDateTime.from(LocalDate.parse(record.get("Date Rated"), DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()),
+                                runtime,
+                                false
+                        ))
                     }
-                } else {
-                    droppedUnratedMediaCounter++
                 }
             }
             println("$droppedUnratedMediaCounter unrated media dropped during import")
@@ -61,5 +49,11 @@ class MediaImporter {
             println("An error occurred while reading csv file: $message")
         }
         return mediaList
+    }
+
+    private fun parseMediaType(imdbMediaType: String?): TraktMediaType {
+        if(imdbMediaType == "movie") return TraktMediaType.MOVIE
+        if(imdbMediaType == "tvEpisode") return TraktMediaType.EPISODE
+        return TraktMediaType.UNDEFINED
     }
 }
