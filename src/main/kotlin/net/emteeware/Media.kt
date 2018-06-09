@@ -13,10 +13,10 @@ data class Media(
         var watchTimeSet: Boolean = false
 ) : Comparable<Media> {
     override fun compareTo(other: Media): Int {
-        if (imdbId == other.imdbId) {
-            return viewDate.compareTo(other.viewDate)
+        return if (imdbId == other.imdbId) {
+            viewDate.compareTo(other.viewDate)
         } else {
-            return imdbId.compareTo(other.imdbId)
+            imdbId.compareTo(other.imdbId)
         }
     }
 }
