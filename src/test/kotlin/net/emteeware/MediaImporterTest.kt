@@ -10,7 +10,7 @@ internal class MediaImporterTest {
 
     @Test
     fun importSimpleMediaList() {
-        val mediaImporter = MediaImporter()
+        val mediaImporter = CsvImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt2473822",
                 "Elementary: Flight Risk",
@@ -53,7 +53,7 @@ internal class MediaImporterTest {
 
     @Test
     fun importMediaListWithUnratedMovieDropped() {
-        val mediaImporter = MediaImporter()
+        val mediaImporter = CsvImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt2473822",
                 "Elementary: Flight Risk",
@@ -97,7 +97,7 @@ internal class MediaImporterTest {
 
     @Test
     fun importMediaListWithAlreadyCheckedInMediaDropped() {
-        val mediaImporter = MediaImporter()
+        val mediaImporter = CsvImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt2473822",
                 "Elementary: Flight Risk",
@@ -134,7 +134,7 @@ internal class MediaImporterTest {
 
     @Test
     fun importMediaListWithMissingRuntimes() {
-        val mediaImporter = MediaImporter()
+        val mediaImporter = CsvImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt2473822",
                 "Elementary: Flight Risk",
