@@ -44,7 +44,48 @@ internal class MediaImporterTest {
                 7,
                 LocalDateTime.of(2014, Month.MARCH, 18, 0, 0),
                 125)
-
+        expectedList += Media("tt0000006",
+                "Episode - Watched in two parts - Must be combined",
+                LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
+                TraktMediaType.EPISODE,
+                10,
+                LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
+                40)
+        expectedList += Media("tt0000007",
+                "Movie - Watched in two parts - Must be combined",
+                LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
+                TraktMediaType.MOVIE,
+                10,
+                LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
+                120)
+        expectedList += Media("tt0000007",
+                "Movie - Rewatch - Must appear",
+                LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
+                TraktMediaType.MOVIE,
+                10,
+                LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
+                120)
+        expectedList += Media("tt0000006",
+                "Episode - Rewatch - Must appear",
+                LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
+                TraktMediaType.EPISODE,
+                10,
+                LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
+                40)
+        expectedList += Media("tt0000011",
+                "Episode - without runtime - must be set to 45",
+                LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
+                TraktMediaType.EPISODE,
+                5,
+                LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
+                45)
+        expectedList += Media("tt0000012",
+                "Movie - without runtime - must be set to 125",
+                LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
+                TraktMediaType.MOVIE,
+                5,
+                LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
+                125)
         val importFile = this::class.java.classLoader.getResource("SampleMoviesForMainImporterTest.csv").toString()
         mediaImporter.executeImport(arrayOf(importFile))
         val actualList = mediaImporter.importMediaList
