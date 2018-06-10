@@ -6,11 +6,11 @@ import java.time.Month
 import java.util.*
 import kotlin.test.assertTrue
 
-internal class MediaImporterTest {
+internal class CsvImporterTest {
 
     @Test
     fun importSimpleMediaList() {
-        val mediaImporter = CsvImporter()
+        val csvImporter = CsvImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt2473822",
                 "Elementary: Flight Risk",
@@ -47,13 +47,13 @@ internal class MediaImporterTest {
 
         val importFile = this::class.java.classLoader.getResource("SampleMovies.csv").toURI()
         val importUntil = LocalDateTime.now()
-        val actualList = mediaImporter.importMediaList(importFile, importUntil)
+        val actualList = csvImporter.importMediaList(importFile, importUntil)
         assertTrue(expectedList.sorted() == actualList.sorted())
     }
 
     @Test
     fun importMediaListWithUnratedMovieDropped() {
-        val mediaImporter = CsvImporter()
+        val csvImporter = CsvImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt2473822",
                 "Elementary: Flight Risk",
@@ -90,14 +90,14 @@ internal class MediaImporterTest {
 
         val importFile = this::class.java.classLoader.getResource("SampleMoviesWithUnratedMedia.csv").toURI()
         val importUntil = LocalDateTime.of(2018, Month.APRIL, 21, 22, 4)
-        val actualList = mediaImporter.importMediaList(importFile, importUntil)
+        val actualList = csvImporter.importMediaList(importFile, importUntil)
         assertTrue(expectedList.sorted() == actualList.sorted(), "Expected: $expectedList, received: $actualList")
 
     }
 
     @Test
     fun importMediaListWithAlreadyCheckedInMediaDropped() {
-        val mediaImporter = CsvImporter()
+        val csvImporter = CsvImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt2473822",
                 "Elementary: Flight Risk",
@@ -126,7 +126,7 @@ internal class MediaImporterTest {
 
         val importFile = this::class.java.classLoader.getResource("SampleMovies.csv").toURI()
         val importUntil = LocalDateTime.of(2014, Month.MARCH, 16, 22, 4)
-        val actualList = mediaImporter.importMediaList(importFile, importUntil)
+        val actualList = csvImporter.importMediaList(importFile, importUntil)
 
         assertTrue(expectedList.sorted() == actualList.sorted(), "Expected: $expectedList, received: $actualList")
 
@@ -134,7 +134,7 @@ internal class MediaImporterTest {
 
     @Test
     fun importMediaListWithMissingRuntimes() {
-        val mediaImporter = CsvImporter()
+        val csvImporter = CsvImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt2473822",
                 "Elementary: Flight Risk",
@@ -171,7 +171,7 @@ internal class MediaImporterTest {
 
         val importFile = this::class.java.classLoader.getResource("SampleMoviesWithMediaWithoutRunningTime.csv").toURI()
         val importUntil = LocalDateTime.now()
-        val actualList = mediaImporter.importMediaList(importFile, importUntil)
+        val actualList = csvImporter.importMediaList(importFile, importUntil)
 
         assertTrue(expectedList.sorted() == actualList.sorted())
 
