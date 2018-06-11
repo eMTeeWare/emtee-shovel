@@ -10,10 +10,10 @@ class MediaImporter {
 
     fun executeImport(args: Array<String>) {
         println("Shoveling data …")
-        val mediaImporter = CsvImporter()
+        val csvImporter = CsvImporter()
         val endDateOfMediaToBeImported = LocalDateTime.of(2018, Month.APRIL, 21, 22, 4)
         val fileToBeImported = URI(args[0].replace(" ", "%20").replace("\\", "/"))
-        importMediaList = mediaImporter.importMediaList(fileToBeImported, endDateOfMediaToBeImported)
+        importMediaList = csvImporter.importMediaList(fileToBeImported, endDateOfMediaToBeImported)
         var remainingMediaCount = importMediaList.size
         println("$remainingMediaCount media imported")
         val mediaCleaner = MediaCleaner()
