@@ -12,6 +12,16 @@ data class Media(
         var runningTimeInMinutes: Int,
         var watchTimeSet: Boolean = false
 ) : Comparable<Media> {
+    init {
+        if (runningTimeInMinutes == 0) {
+            when (type) {
+                TraktMediaType.MOVIE -> runningTimeInMinutes = 125
+                TraktMediaType.EPISODE -> runningTimeInMinutes = 45
+                TraktMediaType.UNDEFINED -> runningTimeInMinutes = 0
+            }
+        }
+    }
+
     override fun compareTo(other: Media): Int {
         return if (imdbId == other.imdbId) {
             viewDate.compareTo(other.viewDate)
