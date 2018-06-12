@@ -19,16 +19,10 @@ class CsvImporter {
             val records : Iterable<CSVRecord> = CSVFormat.EXCEL.withDelimiter(';').withFirstRecordAsHeader().parse(inReader)
             for(record in records) {
                 // TODO: this shit has to be refactored out to a mediaCollection container, but is here for the moment to make the tests run
-                var runtime: Int
                 when {
                     LocalDateTime.from(LocalDate.parse(record.get("Created"), DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()).isAfter(beginningOfTraktCheckIns) -> droppedAlreadyCheckedInMediaCounter++
                     record.get("Your Rating") == "" -> droppedUnratedMediaCounter++
                     else -> {
-                        runtime = when {
-                            record.get("Runtime") == "" && parseMediaType(record.get("Title Type")) == TraktMediaType.MOVIE -> 125
-                            record.get("Runtime") == "" && parseMediaType(record.get("Title Type")) == TraktMediaType.EPISODE -> 45
-                            else -> Integer.parseInt(record.get("Runtime"))
-                        }
                         mediaList.add(Media(
                                 record.get("Const"),
                                 record.get("Title"),
@@ -36,7 +30,7 @@ class CsvImporter {
                                 parseMediaType(record.get("Title Type")),
                                 Integer.parseInt(record.get("Your Rating")),
                                 LocalDateTime.from(LocalDate.parse(record.get("Date Rated"), DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()),
-                                runtime,
+                                parseStringToIntWithDefaultValue(record.get("Runtime")),
                                 false
                         ))
                     }
@@ -49,6 +43,14 @@ class CsvImporter {
             println("An error occurred while reading csv file: $message")
         }
         return mediaList
+    }
+
+    private fun parseStringToIntWithDefaultValue(input: String?): Int {
+        return try {
+            input?.toInt() ?: 0
+        } catch (e: NumberFormatException) {
+            0
+        }
     }
 
     private fun parseMediaType(imdbMediaType: String?): TraktMediaType {

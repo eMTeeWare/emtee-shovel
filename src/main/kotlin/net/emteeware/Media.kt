@@ -9,7 +9,7 @@ data class Media(
         val type: TraktMediaType,
         val rating: Int,
         val ratingDate: LocalDateTime,
-        var runningTimeInMinutes: Int,
+        var runningTimeInMinutes: Int = 0,
         var watchTimeSet: Boolean = false
 ) : Comparable<Media> {
     init {
