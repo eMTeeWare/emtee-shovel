@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.time.Month
 
 class MediaImporter {
-    var importMediaList : List<Media> = ArrayList()
+    var importMediaList : MediaList = ArrayList()
 
     fun executeImport(args: Array<String>) {
         println("Shoveling data …")

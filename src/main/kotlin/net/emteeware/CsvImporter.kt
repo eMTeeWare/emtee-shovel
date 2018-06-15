@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class CsvImporter {
-    fun importMediaList(fileToBeImported: URI, beginningOfTraktCheckIns: LocalDateTime): List<Media> {
-        val mediaList = ArrayList<Media>()
+    fun importMediaList(fileToBeImported: URI, beginningOfTraktCheckIns: LocalDateTime): MediaList {
+        val mediaList = MediaList()
         var droppedUnratedMediaCounter = 0
         var droppedAlreadyCheckedInMediaCounter = 0
 
@@ -20,7 +20,7 @@ class CsvImporter {
             for(record in records) {
                 // TODO: this shit has to be refactored out to a mediaCollection container, but is here for the moment to make the tests run
                 when {
-                    LocalDateTime.from(LocalDate.parse(record.get("Created"), DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()).isAfter(beginningOfTraktCheckIns) -> droppedAlreadyCheckedInMediaCounter++
+                    record.get("Created").asDateTime.isAfter(beginningOfTraktCheckIns) -> droppedAlreadyCheckedInMediaCounter++
                     record.get("Your Rating") == "" -> droppedUnratedMediaCounter++
                     else -> {
                         mediaList.add(Media(
