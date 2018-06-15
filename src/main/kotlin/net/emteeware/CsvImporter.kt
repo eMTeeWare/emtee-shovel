@@ -27,8 +27,8 @@ class CsvImporter {
                                 record.get("Const"),
                                 record.get("Title"),
                                 record.get("Created").asDateTime,
-                                parseMediaType(record.get("Title Type")),
-                                Integer.parseInt(record.get("Your Rating")),
+                                record.get("Title Type").asMediaType,
+                                record.get("Your Rating").toInt(),
                                 record.get("Date Rated").asDateTime,
                                 parseStringToIntWithDefaultValue(record.get("Runtime")),
                                 false
@@ -52,13 +52,16 @@ class CsvImporter {
             0
         }
     }
-
-    private fun parseMediaType(imdbMediaType: String?): TraktMediaType {
-        if(imdbMediaType == "movie") return TraktMediaType.MOVIE
-        if(imdbMediaType == "tvEpisode") return TraktMediaType.EPISODE
-        return TraktMediaType.UNDEFINED
-    }
 }
+
+private val String.asMediaType: TraktMediaType
+    get() {
+        return when(this) {
+            "movie" -> TraktMediaType.MOVIE
+            "tvEpisode" -> TraktMediaType.EPISODE
+            else -> TraktMediaType.UNDEFINED
+        }
+    }
 
 private val String.asDateTime: LocalDateTime
     get() {
