@@ -28,9 +28,9 @@ class CsvImporter {
                                 record.get("Title"),
                                 record.get("Created").asDateTime,
                                 record.get("Title Type").asMediaType,
-                                record.get("Your Rating").toInt(),
+                                record.get("Your Rating").asIntWithDefault(0),
                                 record.get("Date Rated").asDateTime,
-                                parseStringToIntWithDefaultValue(record.get("Runtime")),
+                                record.get("Runtime").asIntWithDefault(0),
                                 false
                         ))
                     }
@@ -45,12 +45,13 @@ class CsvImporter {
         return mediaList
     }
 
-    private fun parseStringToIntWithDefaultValue(input: String?): Int {
-        return try {
-            input?.toInt() ?: 0
-        } catch (e: NumberFormatException) {
-            0
-        }
+}
+
+private fun String?.asIntWithDefault(default: Int): Int {
+    return try {
+        this?.toInt() ?: default
+    } catch (e: NumberFormatException) {
+        default
     }
 }
 
