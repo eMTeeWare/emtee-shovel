@@ -39,8 +39,7 @@ class CsvImporter {
             println("$droppedUnratedMediaCounter unrated media dropped during import")
             println("$droppedAlreadyCheckedInMediaCounter media dropped because they were in a timeframe already checked in to trakt")
         } catch (e: Exception) {
-            val message = e.localizedMessage
-            println("An error occurred while reading csv file: $message")
+            println("An error occurred while reading csv file: ${e.localizedMessage}")
         }
         return mediaList
     }
