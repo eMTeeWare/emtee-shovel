@@ -26,10 +26,10 @@ class CsvImporter {
                         mediaList.add(Media(
                                 record.get("Const"),
                                 record.get("Title"),
-                                LocalDateTime.from(LocalDate.parse(record.get("Created"), DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()),
+                                record.get("Created").asDateTime,
                                 parseMediaType(record.get("Title Type")),
                                 Integer.parseInt(record.get("Your Rating")),
-                                LocalDateTime.from(LocalDate.parse(record.get("Date Rated"), DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay()),
+                                record.get("Date Rated").asDateTime,
                                 parseStringToIntWithDefaultValue(record.get("Runtime")),
                                 false
                         ))
@@ -59,3 +59,8 @@ class CsvImporter {
         return TraktMediaType.UNDEFINED
     }
 }
+
+private val String.asDateTime: LocalDateTime
+    get() {
+        return LocalDateTime.from(LocalDate.parse(this, DateTimeFormatter.ofPattern("dd.MM.yyyy")).atStartOfDay())
+    }
