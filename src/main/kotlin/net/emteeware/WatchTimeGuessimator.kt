@@ -6,11 +6,10 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class WatchTimeGuessimator(var mediaList: List<Media>) {
+class WatchTimeGuessimator(var mediaList: MediaList) {
 
-
-    fun askUserByDate(startDate: LocalDate, endDate: LocalDate): List<Media>{
-        for(media in mediaList) {
+    fun askUserByDate(startDate: LocalDate, endDate: LocalDate): MediaList{
+        for(media in mediaList.sorted()) {
             val formatter = DateTimeFormatter.ofPattern("E, dd.MM.YYYY")
             if(!media.watchTimeSet && media.viewDate.isBefore(endDate.atStartOfDay().plusDays(1)) && media.viewDate.isAfter(startDate.atStartOfDay())) {
                 askUserForWatchTime(media, formatter)
@@ -19,8 +18,8 @@ class WatchTimeGuessimator(var mediaList: List<Media>) {
         return mediaList
     }
 
-    fun askUserByType(mediaType: TraktMediaType): List<Media>{
-        for(media in mediaList) {
+    fun askUserByType(mediaType: TraktMediaType): MediaList{
+        for(media in mediaList.sorted()) {
             val formatter = DateTimeFormatter.ofPattern("E, dd.MM.YYYY")
             if(!media.watchTimeSet && media.type == mediaType) {
                 askUserForWatchTime(media, formatter)

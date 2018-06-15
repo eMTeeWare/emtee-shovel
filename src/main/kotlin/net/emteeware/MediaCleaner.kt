@@ -2,30 +2,30 @@ package net.emteeware
 
 import java.lang.Math.abs
 import java.time.temporal.ChronoUnit
+import java.util.function.Consumer
 
 class MediaCleaner {
-    fun deduplicateMedia(importMediaList: List<Media>, rewatchThreshold: Int): List<Media> {
-        val sortedMediaList = importMediaList.sorted()
-        val mediaToBeRemoved = ArrayList<Media>()
-        val upperBound = sortedMediaList.size - 2
-        for (i in 0..upperBound) {
-            if (sortedMediaList[i].imdbId == sortedMediaList[i + 1].imdbId) {
-                val daysBetweenViewing = ChronoUnit.DAYS.between(sortedMediaList[i + 1].viewDate, sortedMediaList[i].viewDate)
-                if (abs(daysBetweenViewing) < rewatchThreshold) {
-                    mediaToBeRemoved += sortedMediaList[i]
-                }
-            }
-        }
-        return sortedMediaList.minus(mediaToBeRemoved)
+    fun deduplicateMedia(importMediaList: MediaList, rewatchThreshold: Int): MediaList {
+        importMediaList.deduplicate(rewatchThreshold)
+        return importMediaList
     }
 
-    fun removeUnsupportedMedia(importMediaList: List<Media>): List<Media> {
-        val mediaToBeRemoved = ArrayList<Media>()
-        for(media in importMediaList) {
-            if(media.type == TraktMediaType.UNDEFINED) {
-                mediaToBeRemoved += media
-            }
-        }
-        return importMediaList.minus(mediaToBeRemoved)
+    fun deduplicateMedia(importMediaList: List<Media>, rewatchThreshold: Int): MediaList {
+        val mediaList = MediaList()
+        for(media in importMediaList) mediaList.add(media)
+        mediaList.deduplicate(rewatchThreshold)
+        return mediaList
+    }
+
+    fun removeUnsupportedMedia(importMediaList: MediaList): MediaList {
+        importMediaList.removeUnsupportedMedia()
+        return importMediaList
+    }
+
+    fun removeUnsupportedMedia(importMediaList: List<Media>): MediaList {
+        val mediaList = MediaList()
+        importMediaList.forEach { m -> mediaList.add(m) }
+        mediaList.removeUnsupportedMedia()
+        return mediaList
     }
 }
