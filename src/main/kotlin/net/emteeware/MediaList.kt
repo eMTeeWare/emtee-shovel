@@ -1,8 +1,6 @@
 package net.emteeware
 
 import java.time.temporal.ChronoUnit
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MediaList  {
     fun add(media: Media) {

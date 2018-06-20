@@ -1,11 +1,9 @@
 package net.emteeware
 
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import java.time.LocalDateTime
 import java.time.Month
-import java.util.ArrayList
+import java.util.*
 
 internal class MediaImporterTest {
 

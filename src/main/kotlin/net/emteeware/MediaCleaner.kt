@@ -1,9 +1,5 @@
 package net.emteeware
 
-import java.lang.Math.abs
-import java.time.temporal.ChronoUnit
-import java.util.function.Consumer
-
 class MediaCleaner {
     fun deduplicateMedia(importMediaList: MediaList, rewatchThreshold: Int): MediaList {
         importMediaList.deduplicate(rewatchThreshold)
