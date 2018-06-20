@@ -13,17 +13,15 @@ class MediaImporter {
         val csvImporter = CsvImporter()
         val endDateOfMediaToBeImported = LocalDateTime.of(2018, Month.APRIL, 21, 22, 4)
         val fileToBeImported = URI(args[0].replace(" ", "%20").replace("\\", "/"))
+
         importMediaList = csvImporter.importMediaList(fileToBeImported, endDateOfMediaToBeImported)
-        var remainingMediaCount = importMediaList.size
-        println("$remainingMediaCount media imported")
-        importMediaList.removeUnsupportedMedia()
-        val removedInvalidTypeCount = remainingMediaCount - importMediaList.size
+        println("${importMediaList.size} media imported")
+
+        val removedInvalidTypeCount = importMediaList.removeUnsupportedMedia()
         println("$removedInvalidTypeCount invalid media removed")
-        remainingMediaCount -= removedInvalidTypeCount
-        importMediaList.deduplicate(14)
-        val removedDuplicateMediaCount = remainingMediaCount - importMediaList.size
+
+        val removedDuplicateMediaCount = importMediaList.deduplicate(14)
         println("$removedDuplicateMediaCount duplicate media removed")
-        remainingMediaCount -= removedDuplicateMediaCount
 
         val watchTimeGuessimator = WatchTimeGuessimator(importMediaList)
         val startDateForManualWatchTimeQuestion = LocalDate.of(2018, Month.APRIL, 19)

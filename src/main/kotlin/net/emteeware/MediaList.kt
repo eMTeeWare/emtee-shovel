@@ -20,15 +20,16 @@ class MediaList  {
         return mediaList.sorted()
     }
 
-    fun removeUnsupportedMedia() {
+    fun removeUnsupportedMedia() : Int {
         val removeMediaList = ArrayList<Media>()
         for(media in mediaList) {
             if(media.type == TraktMediaType.UNDEFINED) removeMediaList.add(media)
         }
         mediaList.removeAll(removeMediaList)
+        return removeMediaList.size
     }
 
-    fun deduplicate(rewatchThreshold: Int) {
+    fun deduplicate(rewatchThreshold: Int) : Int {
         val sortedMediaList = mediaList.sorted()
         val mediaToBeRemoved = ArrayList<Media>()
         val upperBound = sortedMediaList.size - 2
@@ -41,5 +42,6 @@ class MediaList  {
             }
         }
         mediaList.removeAll(mediaToBeRemoved)
+        return mediaToBeRemoved.size
     }
 }
