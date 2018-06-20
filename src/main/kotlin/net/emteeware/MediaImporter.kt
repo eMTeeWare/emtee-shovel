@@ -16,12 +16,11 @@ class MediaImporter {
         importMediaList = csvImporter.importMediaList(fileToBeImported, endDateOfMediaToBeImported)
         var remainingMediaCount = importMediaList.size
         println("$remainingMediaCount media imported")
-        val mediaCleaner = MediaCleaner()
-        importMediaList = mediaCleaner.removeUnsupportedMedia(importMediaList)
+        importMediaList.removeUnsupportedMedia()
         val removedInvalidTypeCount = remainingMediaCount - importMediaList.size
         println("$removedInvalidTypeCount invalid media removed")
         remainingMediaCount -= removedInvalidTypeCount
-        importMediaList = mediaCleaner.deduplicateMedia(importMediaList, 14)
+        importMediaList.deduplicate(14)
         val removedDuplicateMediaCount = remainingMediaCount - importMediaList.size
         println("$removedDuplicateMediaCount duplicate media removed")
         remainingMediaCount -= removedDuplicateMediaCount

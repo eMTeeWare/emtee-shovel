@@ -3,6 +3,12 @@ package net.emteeware
 import java.time.temporal.ChronoUnit
 
 class MediaList  {
+    constructor()
+
+    constructor(nativeMediaList : List<Media>) {
+        nativeMediaList.forEach( {m -> this.mediaList.add(m)} )
+    }
+
     fun add(media: Media) {
         mediaList.add(media)
     }
