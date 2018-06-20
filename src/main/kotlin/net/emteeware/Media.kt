@@ -14,10 +14,10 @@ data class Media(
 ) : Comparable<Media> {
     init {
         if (runningTimeInMinutes == 0) {
-            when (type) {
-                TraktMediaType.MOVIE -> runningTimeInMinutes = 125
-                TraktMediaType.EPISODE -> runningTimeInMinutes = 45
-                TraktMediaType.UNDEFINED -> runningTimeInMinutes = 0
+            runningTimeInMinutes = when (type) {
+                TraktMediaType.MOVIE -> 125
+                TraktMediaType.EPISODE -> 45
+                TraktMediaType.UNDEFINED -> 0
             }
         }
     }
