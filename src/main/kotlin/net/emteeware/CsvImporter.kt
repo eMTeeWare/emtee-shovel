@@ -1,5 +1,6 @@
 package net.emteeware
 
+import mu.KLogging
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
 import java.io.FileReader
@@ -9,7 +10,10 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class CsvImporter {
+    companion object: KLogging()
+
     fun importMediaList(fileToBeImported: URI, beginningOfTraktCheckIns: LocalDateTime): MediaList {
+
         val mediaList = MediaList()
         var droppedUnratedMediaCounter = 0
         var droppedAlreadyCheckedInMediaCounter = 0
@@ -36,10 +40,10 @@ class CsvImporter {
                     }
                 }
             }
-            println("$droppedUnratedMediaCounter unrated media dropped during import")
-            println("$droppedAlreadyCheckedInMediaCounter media dropped because they were in a timeframe already checked in to trakt")
+            logger.info {"$droppedUnratedMediaCounter unrated media dropped during import"}
+            logger.info {"$droppedAlreadyCheckedInMediaCounter media dropped because they were in a timeframe already checked in to trakt"}
         } catch (e: Exception) {
-            println("An error occurred while reading csv file: ${e.localizedMessage}")
+            logger.error { "An error occurred while reading csv file: ${e.localizedMessage}" }
         }
         return mediaList
     }
