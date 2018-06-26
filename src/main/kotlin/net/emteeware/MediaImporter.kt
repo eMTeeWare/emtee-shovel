@@ -31,7 +31,7 @@ class MediaImporter {
         val startDateForManualWatchTimeQuestion = LocalDate.of(2018, Month.APRIL, 19)
         val endDateForManualWatchTimeQuestion = LocalDate.now()
         importMediaList = watchTimeGuessimator.askUserByDate(startDateForManualWatchTimeQuestion, endDateForManualWatchTimeQuestion)
-        importMediaList.sorted().filter { m -> m.watchTimeSet }.forEach(::println)
+        importMediaList.sorted().filter { m -> m.watchTimeSet }.forEach { m -> logger.info { "$m" }}
 
 //    importMediaList = watchTimeGuessimator.askUserByType(TraktMediaType.MOVIE)
 //    importMediaList.filter { m -> m.watchTimeSet }.forEach(::println)
