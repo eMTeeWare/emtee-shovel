@@ -12,7 +12,7 @@ internal class MediaImporterTest {
         val mediaImporter = MediaImporter()
         val expectedList = ArrayList<Media>()
         expectedList += Media("tt0000000",
-                "Episode - Watched and Rated on Same Day",
+                "TvShow: Episode - Watched and Rated on Same Day",
                 LocalDateTime.of(2014, Month.JANUARY, 18, 0, 0),
                 TraktMediaType.EPISODE,
                 7,
@@ -20,7 +20,7 @@ internal class MediaImporterTest {
                 45
         )
         expectedList += Media("tt0000001",
-                "Episode - Watched and Rated on Different Days",
+                "TvShow: Episode - Watched and Rated on Different Days",
                 LocalDateTime.of(2014, Month.JANUARY, 18, 0, 0),
                 TraktMediaType.EPISODE,
                 8,
@@ -43,7 +43,7 @@ internal class MediaImporterTest {
                 LocalDateTime.of(2014, Month.MARCH, 18, 0, 0),
                 125)
         expectedList += Media("tt0000006",
-                "Episode - Watched in two parts - Must be combined",
+                "TvShow: Episode - Watched in two parts - Must be combined",
                 LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
                 TraktMediaType.EPISODE,
                 10,
@@ -64,14 +64,14 @@ internal class MediaImporterTest {
                 LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
                 120)
         expectedList += Media("tt0000006",
-                "Episode - Rewatch - Must appear",
+                "TvShow: Episode - Rewatch - Must appear",
                 LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
                 TraktMediaType.EPISODE,
                 10,
                 LocalDateTime.of(2017, Month.JANUARY, 2, 0, 0),
                 40)
         expectedList += Media("tt0000011",
-                "Episode - without runtime - must be set to 45",
+                "TvShow: Episode - without runtime - must be set to 45",
                 LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
                 TraktMediaType.EPISODE,
                 5,
