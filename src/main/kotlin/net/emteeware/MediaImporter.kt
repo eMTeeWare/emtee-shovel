@@ -1,7 +1,6 @@
 package net.emteeware
 
 import mu.KLogging
-import mu.KotlinLogging
 import java.net.URI
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -26,6 +25,9 @@ class MediaImporter {
 
         val removedDuplicateMediaCount = importMediaList.deduplicate(14)
         logger.info {"$removedDuplicateMediaCount duplicate media removed"}
+
+        val tvShowLibrary = TvShowLibrary(importMediaList)
+        tvShowLibrary.printShows()
 
         val watchTimeGuessimator = WatchTimeGuessimator(importMediaList)
         val startDateForManualWatchTimeQuestion = LocalDate.of(2018, Month.APRIL, 19)

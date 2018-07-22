@@ -2,8 +2,19 @@ package net.emteeware
 
 import java.time.LocalTime
 
-class TvShowLibrary {
-    val showList = HashMap<String, TvShow>()
+class TvShowLibrary(importMediaList: MediaList) {
+    private val showList = HashMap<String, TvShow>()
+
+    init {
+        for(media in importMediaList.sorted()) {
+            if(media.type == TraktMediaType.EPISODE) {
+                val showName = media.name.substringBefore(':', "UNKNOWN SHOW")
+                if(!showList.containsKey(showName)) {
+                    showList.put(showName, TvShow(showName))
+                }
+            }
+        }
+    }
 
     fun addShow(showName: String) {
         showList.put(showName, TvShow(showName))
@@ -19,5 +30,11 @@ class TvShowLibrary {
 
     fun updateWatchTime(show: TvShow) {
         showList[show.name]?.defaultWatchTime = show.defaultWatchTime
+    }
+
+    fun printShows() {
+        for(tvShow in showList) {
+            println(showList)
+        }
     }
 }
