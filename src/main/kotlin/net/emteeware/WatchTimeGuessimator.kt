@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class WatchTimeGuessimator(var mediaList: MediaList) {
+class WatchTimeGuessimator(var mediaList: MediaList, private val tvShowLibrary: TvShowLibrary) {
 
     fun askUserByDate(startDate: LocalDate, endDate: LocalDate): MediaList{
         for(media in mediaList.sorted()) {
@@ -42,6 +42,27 @@ class WatchTimeGuessimator(var mediaList: MediaList) {
                         finishingHour = null
                     }
                     else -> throw e
+                }
+            }
+        }
+    }
+
+    fun askUserForTvShows() {
+        tvShowLibrary.showList.forEach { tvShow ->
+            println("At what time did you usually finish watching ${tvShow.value.name}?")
+
+            var finishingHour: Int? = null
+            while (finishingHour == null) {
+                try {
+                    finishingHour = readLine()!!.toInt()
+                    tvShow.value.defaultWatchTime = LocalTime.of(finishingHour, 0)
+                } catch (e: Exception) {
+                    when (e) {
+                        is NumberFormatException, is DateTimeException -> {
+                            finishingHour = null
+                        }
+                        else -> throw e
+                    }
                 }
             }
         }

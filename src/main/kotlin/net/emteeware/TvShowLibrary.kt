@@ -3,7 +3,7 @@ package net.emteeware
 import java.time.LocalTime
 
 class TvShowLibrary(importMediaList: MediaList) {
-    private val showList = HashMap<String, TvShow>()
+    internal val showList = HashMap<String, TvShow>()
 
     init {
         for(media in importMediaList.sorted()) when {

@@ -18,7 +18,7 @@ internal class WatchTimeGuessimatorTest {
         val mediaList = MediaList()
         mediaList.add(outOfScopeMovie)
         mediaList.add(inScopeMovie)
-        val watchTimeGuessimator = WatchTimeGuessimator(mediaList)
+        val watchTimeGuessimator = WatchTimeGuessimator(mediaList, TvShowLibrary(mediaList))
 
         val inContent = watchHour.toString()
         val inputStream = ByteArrayInputStream(inContent.toByteArray())
@@ -40,7 +40,7 @@ internal class WatchTimeGuessimatorTest {
         val mediaList = MediaList()
         mediaList.add(movie)
         mediaList.add(episode)
-        val watchTimeGuessimator = WatchTimeGuessimator(mediaList)
+        val watchTimeGuessimator = WatchTimeGuessimator(mediaList, TvShowLibrary(mediaList))
 
         val inContent = watchHour.toString()
         val inputStream = ByteArrayInputStream(inContent.toByteArray())
