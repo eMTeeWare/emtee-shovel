@@ -6,18 +6,16 @@ class TvShowLibrary(importMediaList: MediaList) {
     private val showList = HashMap<String, TvShow>()
 
     init {
-        for(media in importMediaList.sorted()) {
-            if(media.type == TraktMediaType.EPISODE) {
+        for(media in importMediaList.sorted()) when {
+            media.type == TraktMediaType.EPISODE -> {
                 val showName = media.name.substringBefore(':', "UNKNOWN SHOW")
-                if(!showList.containsKey(showName)) {
-                    showList.put(showName, TvShow(showName))
-                }
+                showList[showName] = TvShow(showName)
             }
         }
     }
 
     fun addShow(showName: String) {
-        showList.put(showName, TvShow(showName))
+        showList[showName] = TvShow(showName)
     }
 
     fun doesContain(showName: String) : Boolean {
@@ -33,8 +31,8 @@ class TvShowLibrary(importMediaList: MediaList) {
     }
 
     fun printShows() {
-        for(tvShow in showList) {
-            println(showList)
+        showList.toSortedMap().forEach { tvShow ->
+            println(tvShow)
         }
     }
 }
