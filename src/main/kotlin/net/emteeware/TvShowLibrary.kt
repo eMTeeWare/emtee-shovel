@@ -8,7 +8,7 @@ class TvShowLibrary(importMediaList: MediaList) {
     init {
         for(media in importMediaList.sorted()) when {
             media.type == TraktMediaType.EPISODE -> {
-                val showName = media.name.substringBefore(':', "UNKNOWN SHOW")
+                val showName = media.name.substringBeforeLast(':', "UNKNOWN SHOW")
                 showList[showName] = TvShow(showName)
             }
         }
