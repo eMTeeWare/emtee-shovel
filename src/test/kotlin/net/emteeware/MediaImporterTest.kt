@@ -84,8 +84,8 @@ internal class MediaImporterTest {
                 5,
                 LocalDateTime.of(2018, Month.JANUARY, 2, 0, 0),
                 125)
-        val importFile = this::class.java.classLoader.getResource("SampleMoviesForMainImporterTest.csv").toString()
-        mediaImporter.executeImport(arrayOf(importFile))
+        val importFile = this::class.java.classLoader.getResource("SampleMoviesForMainImporterTest.csv").file
+        mediaImporter.executeImport(arrayOf(importFile.replace("%20", " ")))
         val actualList = mediaImporter.importMediaList
         kotlin.test.assertTrue(expectedList.sorted() == actualList.sorted(), "Expected: $expectedList., received: $actualList")
     }

@@ -1,6 +1,7 @@
 package net.emteeware
 
 import mu.KLogging
+import java.io.File
 import java.net.URI
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -15,7 +16,7 @@ class MediaImporter {
         logger.info {"Shoveling data …"}
         val csvImporter = CsvImporter()
         val endDateOfMediaToBeImported = LocalDateTime.of(2018, Month.APRIL, 21, 22, 4)
-        val fileToBeImported = URI(args[0].replace(" ", "%20").replace("\\", "/"))
+        val fileToBeImported = File(args[0]).toURI()
 
         importMediaList = csvImporter.importMediaList(fileToBeImported, endDateOfMediaToBeImported)
         logger.info {"${importMediaList.size} media imported"}
@@ -27,7 +28,6 @@ class MediaImporter {
         logger.info {"$removedDuplicateMediaCount duplicate media removed"}
 
         val tvShowLibrary = TvShowLibrary(importMediaList)
-        tvShowLibrary.printShows()
 
         val watchTimeGuessimator = WatchTimeGuessimator(importMediaList)
         val startDateForManualWatchTimeQuestion = LocalDate.of(2018, Month.APRIL, 19)
