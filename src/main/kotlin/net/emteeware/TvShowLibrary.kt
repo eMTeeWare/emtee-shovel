@@ -14,20 +14,8 @@ class TvShowLibrary(importMediaList: MediaList) {
         }
     }
 
-    fun addShow(showName: String) {
-        showList[showName] = TvShow(showName)
-    }
-
-    fun doesContain(showName: String) : Boolean {
-        return showList.containsKey(showName)
-    }
-
     fun getWatchTime(showName: String) : LocalTime {
         return showList[showName]?.defaultWatchTime ?: LocalTime.MIDNIGHT
-    }
-
-    fun updateWatchTime(show: TvShow) {
-        showList[show.name]?.defaultWatchTime = show.defaultWatchTime
     }
 
     fun printShows() {
