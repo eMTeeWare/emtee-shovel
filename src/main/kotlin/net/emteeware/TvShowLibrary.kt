@@ -4,12 +4,17 @@ import java.time.LocalTime
 
 class TvShowLibrary(importMediaList: MediaList) {
     internal val showList = HashMap<String, TvShow>()
+    internal val uncertainShowTitles = ArrayList<String>()
 
     init {
         for(media in importMediaList.sorted()) when {
             media.type == TraktMediaType.EPISODE -> {
-                val showName = media.name.substringBeforeLast(':', "UNKNOWN SHOW")
-                showList[showName] = TvShow(showName)
+                if(media.name.filter { c -> c == ':' }.count() > 1) {
+                    uncertainShowTitles.add(media.name)
+                } else {
+                    val showName = media.name.substringBeforeLast(':', "UNKNOWN SHOW")
+                    showList[showName] = TvShow(showName)
+                }
             }
         }
     }

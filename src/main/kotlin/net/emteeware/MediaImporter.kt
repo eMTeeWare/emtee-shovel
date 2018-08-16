@@ -28,6 +28,9 @@ class MediaImporter {
 
         val tvShowLibrary = TvShowLibrary(importMediaList)
 
+        tvShowLibrary.printShows()
+        tvShowLibrary.uncertainShowTitles.sorted().forEach(::println)
+        System.exit(0)
         val watchTimeGuessimator = WatchTimeGuessimator(importMediaList, tvShowLibrary)
         val startDateForManualWatchTimeQuestion = LocalDate.of(2018, Month.APRIL, 19)
         val endDateForManualWatchTimeQuestion = LocalDate.now()
