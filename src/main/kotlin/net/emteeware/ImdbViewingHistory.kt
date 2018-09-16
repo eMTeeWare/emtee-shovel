@@ -6,6 +6,10 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.File
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.util.*
 
 class ImdbViewingHistory {
     var viewingHistory  = mutableListOf<ImportedMedia>()
@@ -33,5 +37,10 @@ class ImdbViewingHistory {
 
     fun removeUnrated() {
         viewingHistory.removeAll { it -> it.YourRating == 0 }
+    }
+
+    fun removeSeenAfter(deadline: LocalDate) {
+        val deadlineDate = Date.from(deadline.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        viewingHistory.removeAll { it -> it.Created.after(deadlineDate) }
     }
 }
