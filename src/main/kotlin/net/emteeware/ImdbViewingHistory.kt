@@ -30,4 +30,8 @@ class ImdbViewingHistory {
     fun print() {
         viewingHistory.forEach(System.out::println)
     }
+
+    fun removeUnrated() {
+        viewingHistory.removeAll { it -> it.YourRating == 0 }
+    }
 }

@@ -8,6 +8,7 @@ fun main(args: Array<String>) {
 
     val imdbViewingHistory = ImdbViewingHistory()
     imdbViewingHistory.importFromCsv(args[0])
+    imdbViewingHistory.removeUnrated()
     imdbViewingHistory.print()
     System.exit(0)
     val userName = Key("user.name", stringType)
