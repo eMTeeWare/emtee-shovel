@@ -6,9 +6,9 @@ import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
 
 fun main(args: Array<String>) {
 
-    val importedMedia : List<ImportedMedia> = readCsv(args[0])
-    importedMedia.forEach(System.out::println)
-
+    val imdbViewingHistory = ImdbViewingHistory()
+    imdbViewingHistory.importFromCsv(args[0])
+    imdbViewingHistory.print()
     System.exit(0)
     val userName = Key("user.name", stringType)
     val config =
