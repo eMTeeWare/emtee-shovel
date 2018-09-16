@@ -5,6 +5,11 @@ import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
 
 
 fun main(args: Array<String>) {
+
+    val importedMedia : List<ImportedMedia> = readCsv(args[0])
+    importedMedia.forEach(System.out::println)
+
+    System.exit(0)
     val userName = Key("user.name", stringType)
     val config =
             systemProperties() overriding

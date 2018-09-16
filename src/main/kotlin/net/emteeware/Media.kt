@@ -1,6 +1,7 @@
 package net.emteeware
 
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 data class Media(
         val imdbId: String,
@@ -12,6 +13,21 @@ data class Media(
         private var runningTimeInMinutes: Int = 0,
         var watchTimeSet: Boolean = false
 ) : Comparable<Media> {
+    constructor(importedMedia: ImportedMedia) :
+            this(
+                    imdbId = importedMedia.Const,
+                    name = importedMedia.Title,
+                    viewDate = importedMedia.Created.toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime(),
+                    type = importedMedia.TitleType,
+                    rating = importedMedia.YourRating,
+                    ratingDate = importedMedia.DateRated!!.toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime(),
+                    runningTimeInMinutes = importedMedia.Runtime
+                    )
+
     init {
         if (runningTimeInMinutes == 0) {
             runningTimeInMinutes = when (type) {

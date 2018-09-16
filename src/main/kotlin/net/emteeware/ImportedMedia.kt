@@ -2,12 +2,14 @@ package net.emteeware
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MappingIterator
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.File
 import java.net.URL
+import java.time.Instant
 import java.util.*
 
 data class ImportedMedia(
@@ -21,7 +23,7 @@ data class ImportedMedia(
         val Title: String,
         val URL: URL,
         @JsonProperty("Title Type")
-        val TitleType: String,
+        val TitleType: TraktMediaType,
         @JsonProperty("IMDb Rating")
         val IMDbRating: String,
         val Runtime: Int,
@@ -37,7 +39,16 @@ data class ImportedMedia(
         val YourRating: Int,
         @JsonProperty("Date Rated")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-        val DateRated: Date?)
+        var DateRated: Date?) {
+    init {
+        try {
+
+            DateRated = DateRated ?: Date.from(Instant.EPOCH)
+        } catch (e: ArithmeticException) {
+            println(DateRated)
+        }
+    }
+}
 
 
 inline fun <reified T> readCsv(filename: String): List<T> {
@@ -46,6 +57,7 @@ inline fun <reified T> readCsv(filename: String): List<T> {
     // used under cc-by-sa license https://creativecommons.org/licenses/by-sa/3.0/
 
     val mapper = CsvMapper().apply { registerModule(KotlinModule()) }
+    mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
     val bootstrapSchema = CsvSchema.emptySchema().withHeader().withColumnSeparator(';')
     val objectReader = mapper.readerFor(T::class.java).with(bootstrapSchema)
 
