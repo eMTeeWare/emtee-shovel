@@ -11,6 +11,7 @@ fun main(args: Array<String>) {
     imdbViewingHistory.importFromCsv(args[0])
     imdbViewingHistory.removeUnrated()
     imdbViewingHistory.removeSeenAfter(LocalDate.of(2018, 4, 21))
+    imdbViewingHistory.removeUndefined()
     imdbViewingHistory.print()
     System.exit(0)
     val userName = Key("user.name", stringType)

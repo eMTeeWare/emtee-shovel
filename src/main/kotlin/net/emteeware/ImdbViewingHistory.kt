@@ -43,4 +43,12 @@ class ImdbViewingHistory {
         val deadlineDate = Date.from(deadline.atStartOfDay(ZoneId.systemDefault()).toInstant())
         viewingHistory.removeAll { it -> it.Created.after(deadlineDate) }
     }
+
+    fun removeByType(type: TraktMediaType) {
+        viewingHistory.removeAll { it -> it.TitleType == type}
+    }
+
+    fun removeUndefined() {
+        removeByType(TraktMediaType.UNDEFINED)
+    }
 }
