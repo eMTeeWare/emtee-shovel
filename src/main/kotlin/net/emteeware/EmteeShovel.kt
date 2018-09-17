@@ -3,6 +3,7 @@ package net.emteeware
 import com.natpryce.konfig.*
 import com.natpryce.konfig.ConfigurationProperties.Companion.systemProperties
 import java.time.LocalDate
+import java.time.Period
 
 
 fun main(args: Array<String>) {
@@ -11,7 +12,8 @@ fun main(args: Array<String>) {
     imdbViewingHistory.importFromCsv(args[0])
     imdbViewingHistory.removeUnrated()
     imdbViewingHistory.removeSeenAfter(LocalDate.of(2018, 4, 21))
-    imdbViewingHistory.removeUndefined()
+    imdbViewingHistory.removeUndefined() // Some of these should be handled as episodes or movies, there should be a manual process for that
+    imdbViewingHistory.removeDuplicateCheckInsWithin(Period.ofDays(14))
     imdbViewingHistory.print()
     System.exit(0)
     val userName = Key("user.name", stringType)

@@ -7,8 +7,8 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.io.File
 import java.time.LocalDate
+import java.time.Period
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.util.*
 
 class ImdbViewingHistory {
@@ -50,5 +50,22 @@ class ImdbViewingHistory {
 
     fun removeUndefined() {
         removeByType(TraktMediaType.UNDEFINED)
+    }
+
+    fun removeDuplicateCheckInsWithin(rewatchThreshold: Period) {
+        viewingHistory.sortedWith(compareBy({it.Const}, {it.Created}))
+        val mediaToBeRemoved = mutableListOf<ImportedMedia>()
+        val upperBound = viewingHistory.size - 2
+        for (i in 0..upperBound) {
+            if (viewingHistory[i].Const == viewingHistory[i + 1].Const) {
+                val daysBetweenViewing = Period.between((viewingHistory[i + 1].Created).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                        , (viewingHistory[i].Created).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                if (daysBetweenViewing.days < rewatchThreshold.days) {
+                    mediaToBeRemoved += viewingHistory[i]
+                }
+            }
+        }
+        viewingHistory.removeAll(mediaToBeRemoved)
+        viewingHistory.sortBy { it.Position }
     }
 }
