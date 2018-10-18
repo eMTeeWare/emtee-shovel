@@ -7,7 +7,10 @@ import java.time.Period
 
 
 fun main(args: Array<String>) {
-
+    if(args.isEmpty() || args.size > 1){
+        println("Please give the csv file exported from IMDb as the only parameter.")
+        System.exit(1)
+    }
     val imdbViewingHistory = ImdbViewingHistory()
     imdbViewingHistory.importFromCsv(args[0])
     imdbViewingHistory.removeUnrated()
