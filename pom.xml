@@ -12,7 +12,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.2.61</kotlin.version>
+        <kotlin.version>1.2.71</kotlin.version>
         <junit.version>5.2.0</junit.version>
         <main.class>net.emteeware.EmteeShovelKt</main.class>
     </properties>
