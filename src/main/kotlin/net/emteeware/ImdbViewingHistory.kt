@@ -12,7 +12,7 @@ import java.time.ZoneId
 import java.util.*
 
 class ImdbViewingHistory {
-    var viewingHistory  = mutableListOf<ImportedMedia>()
+    private var viewingHistory  = mutableListOf<ImportedMedia>()
 
     fun importFromCsv(filename: String) {
         // This method is adopted from a solution of user Xaxxus ( https://stackoverflow.com/users/9768031/xaxxus )
@@ -44,7 +44,7 @@ class ImdbViewingHistory {
         viewingHistory.removeAll { it -> it.Created.after(deadlineDate) }
     }
 
-    fun removeByType(type: TraktMediaType) {
+    private fun removeByType(type: TraktMediaType) {
         viewingHistory.removeAll { it -> it.TitleType == type}
     }
 
