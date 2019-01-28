@@ -72,7 +72,7 @@ class ImdbViewingHistory {
         viewingHistory.sortBy { it.Position }
     }
 
-    fun getTraktMediaList(): ObservableList<Media>? {
+    fun getTraktMediaList(): ObservableList<Media> {
         val returnList = FXCollections.observableArrayList<Media>()
         viewingHistory.forEach(Consumer { m -> returnList += convertedMedia(m) })
         return returnList
