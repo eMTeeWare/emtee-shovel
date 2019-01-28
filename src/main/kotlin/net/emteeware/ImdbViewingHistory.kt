@@ -5,14 +5,17 @@ import com.fasterxml.jackson.databind.MappingIterator
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import java.io.File
 import java.time.LocalDate
 import java.time.Period
 import java.time.ZoneId
 import java.util.*
+import java.util.function.Consumer
 
 class ImdbViewingHistory {
-    private var viewingHistory  = mutableListOf<ImportedMedia>()
+    private var viewingHistory = mutableListOf<ImportedMedia>()
 
     fun importFromCsv(filename: String) {
         // This method is adopted from a solution of user Xaxxus ( https://stackoverflow.com/users/9768031/xaxxus )
@@ -45,7 +48,7 @@ class ImdbViewingHistory {
     }
 
     private fun removeByType(type: TraktMediaType) {
-        viewingHistory.removeAll { it -> it.TitleType == type}
+        viewingHistory.removeAll { it -> it.TitleType == type }
     }
 
     fun removeUndefined() {
@@ -53,7 +56,7 @@ class ImdbViewingHistory {
     }
 
     fun removeDuplicateCheckInsWithin(rewatchThreshold: Period) {
-        viewingHistory.sortedWith(compareBy({it.Const}, {it.Created}))
+        viewingHistory.sortedWith(compareBy({ it.Const }, { it.Created }))
         val mediaToBeRemoved = mutableListOf<ImportedMedia>()
         val upperBound = viewingHistory.size - 2
         for (i in 0..upperBound) {
@@ -67,5 +70,22 @@ class ImdbViewingHistory {
         }
         viewingHistory.removeAll(mediaToBeRemoved)
         viewingHistory.sortBy { it.Position }
+    }
+
+    fun getTraktMediaList(): ObservableList<Media>? {
+        val returnList = FXCollections.observableArrayList<Media>()
+        viewingHistory.forEach(Consumer { m -> returnList += convertedMedia(m) })
+        return returnList
+    }
+
+    private fun convertedMedia(importedMedia: ImportedMedia): Media {
+        return Media(
+                position = importedMedia.Position,
+                imdbId = importedMedia.Const,
+                watchedAt = importedMedia.Created.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                title = importedMedia.Title,
+                imdbUrl = importedMedia.URL,
+                mediaType = importedMedia.TitleType,
+                YourRating = importedMedia.YourRating)
     }
 }
