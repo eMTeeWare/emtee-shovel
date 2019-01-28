@@ -33,7 +33,6 @@ class MainView : View("My View") {
         val imdbViewingHistory = ImdbViewingHistory()
         imdbViewingHistory.importFromCsv("E:\\Archive\\Medienzeugs\\trakt import list full.csv")
         media.setAll(imdbViewingHistory.getTraktMediaList())
-        println("media loaded")
     }
 
     private fun centerVBox(): Node {
