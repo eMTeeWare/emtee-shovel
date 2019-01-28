@@ -3,8 +3,9 @@ package net.emteeware
 import javafx.collections.FXCollections
 import javafx.event.EventHandler
 import javafx.scene.Node
-import javafx.scene.control.Button
+import javafx.stage.FileChooser
 import tornadofx.*
+import java.io.File
 import java.net.URL
 import java.time.LocalDate
 
@@ -23,15 +24,18 @@ class MainView : View("My View") {
     private fun menuBox(): Node {
         return vbox {
             button("import data").apply {
-                onAction = EventHandler { importData() }
+                onAction = EventHandler {
+                    val fileChooser = FileChooser()
+                    val file = fileChooser.showOpenDialog(null)
+                    importData(file) }
             }
         }
 
     }
 
-    private fun importData() {
+    private fun importData(file: File) {
         val imdbViewingHistory = ImdbViewingHistory()
-        imdbViewingHistory.importFromCsv("E:\\Archive\\Medienzeugs\\trakt import list full.csv")
+        imdbViewingHistory.importFromCsv(file.canonicalPath)
         media.setAll(imdbViewingHistory.getTraktMediaList())
     }
 
