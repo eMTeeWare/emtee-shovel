@@ -6,8 +6,6 @@ import javafx.scene.Node
 import javafx.stage.FileChooser
 import tornadofx.*
 import java.io.File
-import java.net.URL
-import java.time.LocalDate
 
 class MainView : View("My View") {
 
@@ -18,15 +16,22 @@ class MainView : View("My View") {
     }
 
     private fun menuBox(): Node {
-        return vbox {
-            button("import data").apply {
+
+        return hbox {
+            var file = File.createTempFile("Hans", "Wurst")
+            button("select file").apply {
                 onAction = EventHandler {
                     val fileChooser = FileChooser()
-                    val file = fileChooser.showOpenDialog(null)
-                    importData(file) }
+                    file = fileChooser.showOpenDialog(null)
+                }
+            }
+
+            button("import data").apply {
+                onAction = EventHandler {
+                    importData(file)
+                }
             }
         }
-
     }
 
     private fun importData(file: File) {
