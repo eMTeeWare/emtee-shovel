@@ -24,8 +24,12 @@ class MainView : View("My View") {
             textfield().bind(filename, true)
             button("…").apply {
                 onAction = EventHandler {
-                    val fileChooser = FileChooser()
-                    file = fileChooser.showOpenDialog(null)
+                    val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
+                    file = chooseFile(
+                            title = "Select file to import",
+                            filters = filters,
+                            mode = FileChooserMode.Single
+                    )[0]
                     filename.set(file.name)
                 }
             }
