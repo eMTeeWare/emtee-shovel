@@ -1,5 +1,6 @@
 package net.emteeware
 
+import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.event.EventHandler
 import javafx.scene.Node
@@ -19,10 +20,13 @@ class MainView : View("My View") {
 
         return hbox {
             var file = File.createTempFile("Hans", "Wurst")
-            button("select file").apply {
+            val filename = SimpleStringProperty("No file selected")
+            textfield().bind(filename, true)
+            button("…").apply {
                 onAction = EventHandler {
                     val fileChooser = FileChooser()
                     file = fileChooser.showOpenDialog(null)
+                    filename.set(file.name)
                 }
             }
 
