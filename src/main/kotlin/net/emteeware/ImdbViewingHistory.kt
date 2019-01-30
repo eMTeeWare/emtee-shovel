@@ -22,9 +22,11 @@ class ImdbViewingHistory {
         // on Stack Overflow: https://stackoverflow.com/a/50278646
         // used under cc-by-sa license https://creativecommons.org/licenses/by-sa/3.0/
 
+        val separator = ';'
+
         val mapper = CsvMapper().apply { registerModule(KotlinModule()) }
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
-        val bootstrapSchema = CsvSchema.emptySchema().withHeader().withColumnSeparator(';')
+        val bootstrapSchema = CsvSchema.emptySchema().withHeader().withColumnSeparator(separator)
         val objectReader = mapper.readerFor(ImportedMedia::class.java).with(bootstrapSchema)
 
 
