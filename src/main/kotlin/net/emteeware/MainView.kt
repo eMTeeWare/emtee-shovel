@@ -25,12 +25,15 @@ class MainView : View("My View") {
             button("…").apply {
                 onAction = EventHandler {
                     val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
-                    file = chooseFile(
+                    val files = chooseFile(
                             title = "Select file to import",
                             filters = filters,
                             mode = FileChooserMode.Single
-                    )[0]
-                    filename.set(file.name)
+                    )
+                    if(files.isNotEmpty()) {
+                        file = files[0]
+                        filename.set(file.name)
+                    }
                 }
             }
 
