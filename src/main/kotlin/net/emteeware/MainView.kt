@@ -7,9 +7,11 @@ import javafx.scene.Node
 import javafx.stage.FileChooser
 import tornadofx.*
 import java.io.File
+import java.nio.file.Files
 import java.util.prefs.Preferences
 
 private const val PREFS_LAST_USED_DIR_KEY = "lastUsedDirectory"
+private const val HEADER_ROW_COUNT = 1
 
 class MainView : View("My View") {
 
@@ -24,6 +26,7 @@ class MainView : View("My View") {
 
         return vbox {
             val filepreview = SimpleStringProperty("No file loaded")
+            val lineCountString = SimpleStringProperty("No file selected")
             hbox {
                 var file = File.createTempFile("Hans", "Wurst")
                 val filename = SimpleStringProperty("No file selected")
@@ -41,6 +44,7 @@ class MainView : View("My View") {
                         if (files.isNotEmpty()) {
                             file = files[0]
                             filename.set(file.name)
+                            lineCountString.set("${Files.lines(file.toPath()).count()-HEADER_ROW_COUNT} entries found")
                             prefs.put(PREFS_LAST_USED_DIR_KEY, file.path.dropLast(file.name.length))
                             val fileContentPreview = StringBuffer()
                             file.useLines { lines: Sequence<String> ->
@@ -58,6 +62,7 @@ class MainView : View("My View") {
                         importData(file)
                     }
                 }
+                label().bind(lineCountString)
             }
             textarea().bind(filepreview, true).apply {
                 prefHeight = 80.0
