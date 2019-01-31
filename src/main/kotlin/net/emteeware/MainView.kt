@@ -18,29 +18,42 @@ class MainView : View("My View") {
 
     private fun menuBox(): Node {
 
-        return hbox {
-            var file = File.createTempFile("Hans", "Wurst")
-            val filename = SimpleStringProperty("No file selected")
-            textfield().bind(filename, true)
-            button("…").apply {
-                onAction = EventHandler {
-                    val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
-                    val files = chooseFile(
-                            title = "Select file to import",
-                            filters = filters,
-                            mode = FileChooserMode.Single
-                    )
-                    if(files.isNotEmpty()) {
-                        file = files[0]
-                        filename.set(file.name)
+        return vbox {
+            val filepreview = SimpleStringProperty("No file loaded")
+            hbox {
+                var file = File.createTempFile("Hans", "Wurst")
+                val filename = SimpleStringProperty("No file selected")
+                textfield().bind(filename, true)
+                button("…").apply {
+                    onAction = EventHandler {
+                        val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
+                        val files = chooseFile(
+                                title = "Select file to import",
+                                filters = filters,
+                                mode = FileChooserMode.Single
+                        )
+                        if (files.isNotEmpty()) {
+                            file = files[0]
+                            filename.set(file.name)
+                            val fileContentPreview = StringBuffer()
+                            file.useLines { lines: Sequence<String> ->
+                                lines
+                                        .take(3)
+                                        .forEach { l -> fileContentPreview.append(l).append('\n') }
+                            }
+                            filepreview.set(fileContentPreview.toString())
+                        }
+                    }
+                }
+
+                button("import data").apply {
+                    onAction = EventHandler {
+                        importData(file)
                     }
                 }
             }
-
-            button("import data").apply {
-                onAction = EventHandler {
-                    importData(file)
-                }
+            textarea().bind(filepreview, true).apply {
+                prefHeight = 80.0
             }
         }
     }
