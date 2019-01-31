@@ -7,9 +7,13 @@ import javafx.scene.Node
 import javafx.stage.FileChooser
 import tornadofx.*
 import java.io.File
+import java.util.prefs.Preferences
+
+private const val PREFS_LAST_USED_DIR_KEY = "lastUsedDirectory"
 
 class MainView : View("My View") {
 
+    val prefs = Preferences.userRoot().node(this.javaClass.name)
     private var media = FXCollections.observableArrayList<Media>()
     override val root = borderpane {
         top = menuBox()
@@ -31,10 +35,13 @@ class MainView : View("My View") {
                                 title = "Select file to import",
                                 filters = filters,
                                 mode = FileChooserMode.Single
-                        )
+                        ){
+                            initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
+                        }
                         if (files.isNotEmpty()) {
                             file = files[0]
                             filename.set(file.name)
+                            prefs.put(PREFS_LAST_USED_DIR_KEY, file.path.dropLast(file.name.length))
                             val fileContentPreview = StringBuffer()
                             file.useLines { lines: Sequence<String> ->
                                 lines
