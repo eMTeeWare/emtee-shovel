@@ -35,7 +35,7 @@ class MainView : View("My View") {
                                 title = "Select file to import",
                                 filters = filters,
                                 mode = FileChooserMode.Single
-                        ){
+                        ) {
                             initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
                         }
                         if (files.isNotEmpty()) {
