@@ -26,7 +26,6 @@ class MainView : View("My View") {
     private fun menuBox(): Node {
 
         return vbox {
-            val filepreview = SimpleStringProperty("No file loaded")
             val lineCountString = SimpleStringProperty("No file selected")
             hbox {
                 var file = File.createTempFile("Hans", "Wurst")
@@ -53,7 +52,7 @@ class MainView : View("My View") {
                                         .take(3)
                                         .forEach { l -> fileContentPreview.append(l).append('\n') }
                             }
-                            filepreview.set(fileContentPreview.toString())
+                            controller.filepreview.set(fileContentPreview.toString())
                         }
                     }
                 }
@@ -65,7 +64,7 @@ class MainView : View("My View") {
                 }
                 label().bind(lineCountString)
             }
-            textarea().bind(filepreview, true).apply {
+            textarea().bind(controller.filepreview, true).apply {
                 prefHeight = 80.0
             }
         }
