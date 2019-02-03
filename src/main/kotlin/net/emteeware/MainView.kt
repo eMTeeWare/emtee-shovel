@@ -15,9 +15,9 @@ private const val HEADER_ROW_COUNT = 1
 
 class MainView : View("My View") {
 
-    val controller: MainViewController by inject()
+    private val controller: MainViewController by inject()
 
-    val prefs = Preferences.userRoot().node(this.javaClass.name)
+    private val prefs = Preferences.userRoot().node(this.javaClass.name)
     private var media = controller.getMediaList()
     override val root = borderpane {
         top = menuBox()
