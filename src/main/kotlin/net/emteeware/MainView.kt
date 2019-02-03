@@ -53,6 +53,7 @@ class MainView : View("My View") {
                                         .forEach { l -> fileContentPreview.append(l).append('\n') }
                             }
                             controller.filepreview.set(fileContentPreview.toString())
+                            controller.importDisabled.set(false)
                         }
                     }
                 }
@@ -61,6 +62,7 @@ class MainView : View("My View") {
                     onAction = EventHandler {
                         controller.importData(file)
                     }
+                    disableProperty().bind(controller.importDisabled)
                 }
                 label().bind(lineCountString)
             }
