@@ -79,6 +79,7 @@ class MainView : View("My View") {
                 readonlyColumn("Date", Media::watchedAt)
                 readonlyColumn("Title", Media::title)
                 readonlyColumn("Type", Media::mediaType)
+                readonlyColumn("Rating", Media::YourRating)
                 columnResizePolicy = SmartResize.POLICY
             }
         }
