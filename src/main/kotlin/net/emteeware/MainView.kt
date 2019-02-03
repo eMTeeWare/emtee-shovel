@@ -18,7 +18,7 @@ class MainView : View("My View") {
     val controller: MainViewController by inject()
 
     val prefs = Preferences.userRoot().node(this.javaClass.name)
-    private var media = FXCollections.observableArrayList<Media>()
+    private var media = controller.getMediaList()
     override val root = borderpane {
         top = menuBox()
         center = centerVBox()
@@ -46,7 +46,7 @@ class MainView : View("My View") {
                         if (files.isNotEmpty()) {
                             file = files[0]
                             filename.set(file.name)
-                            lineCountString.set("${Files.lines(file.toPath()).count()-HEADER_ROW_COUNT} entries found")
+                            lineCountString.set("${Files.lines(file.toPath()).count() - HEADER_ROW_COUNT} entries found")
                             prefs.put(PREFS_LAST_USED_DIR_KEY, file.path.dropLast(file.name.length))
                             val fileContentPreview = StringBuffer()
                             file.useLines { lines: Sequence<String> ->
@@ -61,7 +61,7 @@ class MainView : View("My View") {
 
                 button("import data").apply {
                     onAction = EventHandler {
-                        importData(file)
+                        controller.importData(file)
                     }
                 }
                 label().bind(lineCountString)
@@ -72,11 +72,6 @@ class MainView : View("My View") {
         }
     }
 
-    private fun importData(file: File) {
-        val imdbViewingHistory = ImdbViewingHistory()
-        imdbViewingHistory.importFromCsv(file.canonicalPath)
-        media.setAll(imdbViewingHistory.getTraktMediaList())
-    }
 
     private fun centerVBox(): Node {
         return vbox {
