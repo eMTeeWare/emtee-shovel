@@ -1,7 +1,6 @@
 package net.emteeware
 
 import javafx.beans.property.SimpleStringProperty
-import javafx.collections.FXCollections
 import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.stage.FileChooser
