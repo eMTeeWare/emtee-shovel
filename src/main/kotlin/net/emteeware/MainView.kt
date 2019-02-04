@@ -29,8 +29,7 @@ class MainView : View("My View") {
             val lineCountString = SimpleStringProperty("No file selected")
             hbox {
                 var file = File.createTempFile("Hans", "Wurst")
-                val filename = SimpleStringProperty("No file selected")
-                textfield().bind(filename, true)
+                textfield().bind(controller.filename, true)
                 button("…").apply {
                     onAction = EventHandler {
                         val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
@@ -43,7 +42,7 @@ class MainView : View("My View") {
                         }
                         if (files.isNotEmpty()) {
                             file = files[0]
-                            filename.set(file.name)
+                            controller.filename.set(file.name)
                             lineCountString.set("${Files.lines(file.toPath()).count() - HEADER_ROW_COUNT} entries found")
                             prefs.put(PREFS_LAST_USED_DIR_KEY, file.path.dropLast(file.name.length))
                             val fileContentPreview = StringBuffer()

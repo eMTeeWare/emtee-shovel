@@ -13,6 +13,7 @@ class MainViewController : Controller() {
     val media = FXCollections.observableArrayList<Media>()
     val filepreview = SimpleStringProperty("No file selected")
     val importDisabled = SimpleBooleanProperty(true)
+    val filename = SimpleStringProperty("No file selected")
 
     fun getMediaList(): ObservableList<Media> {
         return media
