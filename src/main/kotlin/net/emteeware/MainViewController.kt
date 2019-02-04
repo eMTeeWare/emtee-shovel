@@ -9,9 +9,11 @@ import javafx.collections.ObservableList
 import javafx.stage.FileChooser
 import tornadofx.*
 import java.io.File
+import java.nio.file.Files
 import java.util.prefs.Preferences
 
 private const val PREFS_LAST_USED_DIR_KEY = "lastUsedDirectory"
+private const val HEADER_ROW_COUNT = 1
 
 class MainViewController : Controller() {
     private val prefs = Preferences.userRoot().node(this.javaClass.name)
@@ -36,5 +38,22 @@ class MainViewController : Controller() {
 
     fun updateInitialDirectory() {
         prefs.put(PREFS_LAST_USED_DIR_KEY, file.path.dropLast(file.name.length))
+    }
+
+    fun loadFile(chosenFiles: List<File>) {
+        if (chosenFiles.isNotEmpty()) {
+            file = chosenFiles[0]
+            filename.set(file.name)
+            lineCountString.set("${Files.lines(file.toPath()).count() - HEADER_ROW_COUNT} entries found")
+            updateInitialDirectory()
+            val fileContentPreview = StringBuffer()
+            file.useLines { lines: Sequence<String> ->
+                lines
+                        .take(3)
+                        .forEach { l -> fileContentPreview.append(l).append('\n') }
+            }
+            filepreview.set(fileContentPreview.toString())
+            importDisabled.set(false)
+        }
     }
 }

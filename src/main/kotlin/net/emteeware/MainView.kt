@@ -10,7 +10,6 @@ import java.nio.file.Files
 import java.util.prefs.Preferences
 
 
-private const val HEADER_ROW_COUNT = 1
 
 class MainView : View("My View") {
 
@@ -30,27 +29,13 @@ class MainView : View("My View") {
                 textfield().bind(controller.filename, true)
                 button("…").apply {
                     onAction = EventHandler {
-                        val files = chooseFile(
+                        controller.loadFile(chooseFile(
                                 title = "Select file to import",
                                 filters = controller.filters,
                                 mode = FileChooserMode.Single
                         ) {
                             initialDirectory = controller.initialDirectory
-                        }
-                        if (files.isNotEmpty()) {
-                            controller.file = files[0]
-                            controller.filename.set(controller.file.name)
-                            controller.lineCountString.set("${Files.lines(controller.file.toPath()).count() - HEADER_ROW_COUNT} entries found")
-                            controller.updateInitialDirectory()
-                            val fileContentPreview = StringBuffer()
-                            controller.file.useLines { lines: Sequence<String> ->
-                                lines
-                                        .take(3)
-                                        .forEach { l -> fileContentPreview.append(l).append('\n') }
-                            }
-                            controller.filepreview.set(fileContentPreview.toString())
-                            controller.importDisabled.set(false)
-                        }
+                        })
                     }
                 }
 
