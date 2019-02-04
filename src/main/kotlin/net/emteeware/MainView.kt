@@ -1,14 +1,8 @@
 package net.emteeware
 
-import javafx.beans.property.SimpleStringProperty
 import javafx.event.EventHandler
 import javafx.scene.Node
-import javafx.stage.FileChooser
 import tornadofx.*
-import java.io.File
-import java.nio.file.Files
-import java.util.prefs.Preferences
-
 
 
 class MainView : View("My View") {
