@@ -26,7 +26,6 @@ class MainView : View("My View") {
     private fun menuBox(): Node {
 
         return vbox {
-            val lineCountString = SimpleStringProperty("No file selected")
             hbox {
                 textfield().bind(controller.filename, true)
                 button("…").apply {
@@ -41,7 +40,7 @@ class MainView : View("My View") {
                         if (files.isNotEmpty()) {
                             controller.file = files[0]
                             controller.filename.set(controller.file.name)
-                            lineCountString.set("${Files.lines(controller.file.toPath()).count() - HEADER_ROW_COUNT} entries found")
+                            controller.lineCountString.set("${Files.lines(controller.file.toPath()).count() - HEADER_ROW_COUNT} entries found")
                             controller.updateInitialDirectory()
                             val fileContentPreview = StringBuffer()
                             controller.file.useLines { lines: Sequence<String> ->
@@ -61,7 +60,7 @@ class MainView : View("My View") {
                     }
                     disableProperty().bind(controller.importDisabled)
                 }
-                label().bind(lineCountString)
+                label().bind(controller.lineCountString)
             }
             textarea().bind(controller.filepreview, true).apply {
                 prefHeight = 80.0

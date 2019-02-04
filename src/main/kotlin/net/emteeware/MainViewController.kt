@@ -22,6 +22,7 @@ class MainViewController : Controller() {
     var file =  File.createTempFile("Hans", "Wurst")
     val initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
     val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
+    val lineCountString = SimpleStringProperty("No file selected")
 
     fun getMediaList(): ObservableList<Media> {
         return media
