@@ -31,10 +31,9 @@ class MainView : View("My View") {
                 textfield().bind(controller.filename, true)
                 button("…").apply {
                     onAction = EventHandler {
-                        val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
                         val files = chooseFile(
                                 title = "Select file to import",
-                                filters = filters,
+                                filters = controller.filters,
                                 mode = FileChooserMode.Single
                         ) {
                             initialDirectory = controller.initialDirectory

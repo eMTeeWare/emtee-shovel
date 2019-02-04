@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableStringValue
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.stage.FileChooser
 import tornadofx.*
 import java.io.File
 import java.util.prefs.Preferences
@@ -20,6 +21,7 @@ class MainViewController : Controller() {
     val filename = SimpleStringProperty("No file selected")
     var file =  File.createTempFile("Hans", "Wurst")
     val initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
+    val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
 
     fun getMediaList(): ObservableList<Media> {
         return media
