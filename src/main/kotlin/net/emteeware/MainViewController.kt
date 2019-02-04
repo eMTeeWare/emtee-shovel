@@ -36,7 +36,7 @@ class MainViewController : Controller() {
         media.setAll(imdbViewingHistory.getTraktMediaList())
     }
 
-    fun updateInitialDirectory() {
+    private fun updateInitialDirectory() {
         prefs.put(PREFS_LAST_USED_DIR_KEY, file.path.dropLast(file.name.length))
     }
 
