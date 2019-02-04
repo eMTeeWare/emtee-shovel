@@ -9,14 +9,14 @@ import java.io.File
 import java.nio.file.Files
 import java.util.prefs.Preferences
 
-private const val PREFS_LAST_USED_DIR_KEY = "lastUsedDirectory"
+
 private const val HEADER_ROW_COUNT = 1
 
 class MainView : View("My View") {
 
     private val controller: MainViewController by inject()
 
-    private val prefs = Preferences.userRoot().node(this.javaClass.name)
+
     private var media = controller.getMediaList()
     override val root = borderpane {
         top = menuBox()
@@ -37,13 +37,13 @@ class MainView : View("My View") {
                                 filters = filters,
                                 mode = FileChooserMode.Single
                         ) {
-                            initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
+                            initialDirectory = controller.initialDirectory
                         }
                         if (files.isNotEmpty()) {
                             controller.file = files[0]
                             controller.filename.set(controller.file.name)
                             lineCountString.set("${Files.lines(controller.file.toPath()).count() - HEADER_ROW_COUNT} entries found")
-                            prefs.put(PREFS_LAST_USED_DIR_KEY, controller.file.path.dropLast(controller.file.name.length))
+                            controller.updateInitialDirectory()
                             val fileContentPreview = StringBuffer()
                             controller.file.useLines { lines: Sequence<String> ->
                                 lines
