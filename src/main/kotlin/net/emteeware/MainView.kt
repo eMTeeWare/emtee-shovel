@@ -28,7 +28,6 @@ class MainView : View("My View") {
         return vbox {
             val lineCountString = SimpleStringProperty("No file selected")
             hbox {
-                var file = File.createTempFile("Hans", "Wurst")
                 textfield().bind(controller.filename, true)
                 button("…").apply {
                     onAction = EventHandler {
@@ -41,12 +40,12 @@ class MainView : View("My View") {
                             initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
                         }
                         if (files.isNotEmpty()) {
-                            file = files[0]
-                            controller.filename.set(file.name)
-                            lineCountString.set("${Files.lines(file.toPath()).count() - HEADER_ROW_COUNT} entries found")
-                            prefs.put(PREFS_LAST_USED_DIR_KEY, file.path.dropLast(file.name.length))
+                            controller.file = files[0]
+                            controller.filename.set(controller.file.name)
+                            lineCountString.set("${Files.lines(controller.file.toPath()).count() - HEADER_ROW_COUNT} entries found")
+                            prefs.put(PREFS_LAST_USED_DIR_KEY, controller.file.path.dropLast(controller.file.name.length))
                             val fileContentPreview = StringBuffer()
-                            file.useLines { lines: Sequence<String> ->
+                            controller.file.useLines { lines: Sequence<String> ->
                                 lines
                                         .take(3)
                                         .forEach { l -> fileContentPreview.append(l).append('\n') }
@@ -59,7 +58,7 @@ class MainView : View("My View") {
 
                 button("import data").apply {
                     onAction = EventHandler {
-                        controller.importData(file)
+                        controller.importData(controller.file)
                     }
                     disableProperty().bind(controller.importDisabled)
                 }

@@ -14,6 +14,7 @@ class MainViewController : Controller() {
     val filepreview = SimpleStringProperty("No file selected")
     val importDisabled = SimpleBooleanProperty(true)
     val filename = SimpleStringProperty("No file selected")
+    var file =  File.createTempFile("Hans", "Wurst")
 
     fun getMediaList(): ObservableList<Media> {
         return media
