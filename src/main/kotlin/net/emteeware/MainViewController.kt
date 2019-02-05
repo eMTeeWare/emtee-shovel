@@ -63,6 +63,10 @@ class MainViewController : Controller() {
                         .forEach { l -> fileContentPreview.append(l).append('\n') }
             }
             filepreview.set(fileContentPreview.toString())
+            val firstline = fileContentPreview.split('\n')[0]
+            if(firstline.contains(',') && !firstline.contains(';')) {
+                separatorString.set(",")
+            }
             importDisabled.set(false)
         }
     }
