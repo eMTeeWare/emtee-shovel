@@ -9,6 +9,8 @@ import javafx.collections.ObservableList
 import javafx.stage.FileChooser
 import tornadofx.*
 import java.io.File
+import java.io.UncheckedIOException
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.util.prefs.Preferences
 
@@ -44,7 +46,15 @@ class MainViewController : Controller() {
         if (chosenFiles.isNotEmpty()) {
             file = chosenFiles[0]
             filename.set(file.name)
-            lineCountString.set("${Files.lines(file.toPath()).count() - HEADER_ROW_COUNT} entries found")
+            val linecount = try {
+                Files.lines(file.toPath()).count()
+            } catch (e : UncheckedIOException) {
+                Files.lines(file.toPath(), StandardCharsets.ISO_8859_1).count()
+            } catch (e : Exception) {
+                println(e)
+                0L
+            }
+            lineCountString.set("${linecount - HEADER_ROW_COUNT} entries found")
             updateInitialDirectory()
             val fileContentPreview = StringBuffer()
             file.useLines { lines: Sequence<String> ->
