@@ -87,6 +87,6 @@ class ImdbViewingHistory {
                 title = importedMedia.Title,
                 imdbUrl = importedMedia.URL,
                 mediaType = importedMedia.TitleType,
-                YourRating = importedMedia.YourRating)
+                yourRating = importedMedia.YourRating)
     }
 }

@@ -9,4 +9,4 @@ data class Media (val position: Int,
                   val title: String,
                   val imdbUrl: URL,
                   val mediaType: TraktMediaType,
-                  val YourRating: Int)
+                  val yourRating: Int)
