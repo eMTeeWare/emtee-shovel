@@ -8,6 +8,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import java.io.File
+import java.nio.charset.Charset
 import java.time.LocalDate
 import java.time.Period
 import java.time.ZoneId
@@ -17,7 +18,7 @@ import java.util.function.Consumer
 class ImdbViewingHistory {
     private var viewingHistory = mutableListOf<ImportedMedia>()
 
-    fun importFromCsv(filename: String, separator: Char) {
+    fun importFromCsv(filename: String, separator: Char, recognizedCharset: Charset) {
         // This method is adopted from a solution of user Xaxxus ( https://stackoverflow.com/users/9768031/xaxxus )
         // on Stack Overflow: https://stackoverflow.com/a/50278646
         // used under cc-by-sa license https://creativecommons.org/licenses/by-sa/3.0/
@@ -29,7 +30,7 @@ class ImdbViewingHistory {
 
 
         File(filename).inputStream().use { fileInputStream ->
-            val mappingIterator: MappingIterator<ImportedMedia> = objectReader.readValues(fileInputStream)
+            val mappingIterator: MappingIterator<ImportedMedia> = objectReader.readValues(fileInputStream.bufferedReader(recognizedCharset))
             mappingIterator.forEach { viewingHistory.add(it) }
         }
     }

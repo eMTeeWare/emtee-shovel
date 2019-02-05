@@ -31,10 +31,12 @@ class MainViewController : Controller() {
         return media
     }
 
+    private var recognizedCharset = StandardCharsets.UTF_8
+
     fun importData(file: File) {
         val imdbViewingHistory = ImdbViewingHistory()
         val separatorChar = separatorString.get()[0]
-        imdbViewingHistory.importFromCsv(file.canonicalPath, separatorChar)
+        imdbViewingHistory.importFromCsv(file.canonicalPath, separatorChar, recognizedCharset)
         media.setAll(imdbViewingHistory.getTraktMediaList())
     }
 
@@ -49,7 +51,8 @@ class MainViewController : Controller() {
             val linecount = try {
                 Files.lines(file.toPath()).count()
             } catch (e : UncheckedIOException) {
-                Files.lines(file.toPath(), StandardCharsets.ISO_8859_1).count()
+                recognizedCharset = StandardCharsets.ISO_8859_1
+                Files.lines(file.toPath(), recognizedCharset).count()
             } catch (e : Exception) {
                 println(e)
                 0L
