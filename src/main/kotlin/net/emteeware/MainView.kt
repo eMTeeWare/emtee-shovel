@@ -42,7 +42,7 @@ class MainView : View("My View") {
                 label().bind(controller.lineCountString)
             }
             textarea().bind(controller.filepreview, true).apply {
-                prefHeight = 80.0
+                prefHeight = 120.0
             }
         }
     }
