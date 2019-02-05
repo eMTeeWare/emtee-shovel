@@ -44,6 +44,10 @@ class MainView : View("My View") {
             textarea().bind(controller.filepreview, true).apply {
                 prefHeight = 120.0
             }
+            hbox {
+                label("Field separator: ")
+                textfield().bind(controller.separatorString)
+            }
         }
     }
 

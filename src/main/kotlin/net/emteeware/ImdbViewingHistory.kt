@@ -17,12 +17,10 @@ import java.util.function.Consumer
 class ImdbViewingHistory {
     private var viewingHistory = mutableListOf<ImportedMedia>()
 
-    fun importFromCsv(filename: String) {
+    fun importFromCsv(filename: String, separator: Char) {
         // This method is adopted from a solution of user Xaxxus ( https://stackoverflow.com/users/9768031/xaxxus )
         // on Stack Overflow: https://stackoverflow.com/a/50278646
         // used under cc-by-sa license https://creativecommons.org/licenses/by-sa/3.0/
-
-        val separator = ';'
 
         val mapper = CsvMapper().apply { registerModule(KotlinModule()) }
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)

@@ -25,6 +25,7 @@ class MainViewController : Controller() {
     val initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
     val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
     val lineCountString = SimpleStringProperty("No file selected")
+    var separatorString = SimpleStringProperty(";")
 
     fun getMediaList(): ObservableList<Media> {
         return media
@@ -32,7 +33,8 @@ class MainViewController : Controller() {
 
     fun importData(file: File) {
         val imdbViewingHistory = ImdbViewingHistory()
-        imdbViewingHistory.importFromCsv(file.canonicalPath)
+        val separatorChar = separatorString.get()[0]
+        imdbViewingHistory.importFromCsv(file.canonicalPath, separatorChar)
         media.setAll(imdbViewingHistory.getTraktMediaList())
     }
 
