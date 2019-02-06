@@ -9,6 +9,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import java.io.File
 import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.Period
 import java.time.ZoneId
@@ -28,10 +29,18 @@ class ImdbViewingHistory {
         val bootstrapSchema = CsvSchema.emptySchema().withHeader().withColumnSeparator(separator)
         val objectReader = mapper.readerFor(ImportedMedia::class.java).with(bootstrapSchema)
 
-
-        File(filename).inputStream().use { fileInputStream ->
-            val mappingIterator: MappingIterator<ImportedMedia> = objectReader.readValues(fileInputStream.bufferedReader(recognizedCharset))
-            mappingIterator.forEach { viewingHistory.add(it) }
+        // bufferedReader returns wrong column headers with UTF-8 for some reason
+        // e.g. ?Position instead of Position
+        if(recognizedCharset == StandardCharsets.ISO_8859_1) {
+            File(filename).inputStream().use { fileInputStream ->
+                val mappingIterator: MappingIterator<ImportedMedia> = objectReader.readValues(fileInputStream.bufferedReader(recognizedCharset))
+                mappingIterator.forEach { viewingHistory.add(it) }
+            }
+        } else {
+            File(filename).inputStream().use { fileInputStream ->
+                val mappingIterator: MappingIterator<ImportedMedia> = objectReader.readValues(fileInputStream)
+                mappingIterator.forEach { viewingHistory.add(it) }
+            }
         }
     }
 
