@@ -9,4 +9,5 @@ data class Media (val position: Int,
                   val title: String,
                   val imdbUrl: URL,
                   val mediaType: TraktMediaType,
-                  val yourRating: Int)
+                  val yourRating: Int,
+                  val addToImport: Boolean = true)
