@@ -21,7 +21,7 @@ class MainViewController : Controller() {
     val filepreview = SimpleStringProperty("No file selected")
     val importDisabled = SimpleBooleanProperty(true)
     val filename = SimpleStringProperty("No file selected")
-    var file =  File.createTempFile("Hans", "Wurst")
+    var file = File.createTempFile("Hans", "Wurst")
     val initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
     val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
     val lineCountString = SimpleStringProperty("No file selected")
@@ -33,10 +33,12 @@ class MainViewController : Controller() {
 
     private var recognizedCharset = StandardCharsets.UTF_8
 
+    private lateinit var recognizedContentVersion: ContentVersion
+
     fun importData(file: File) {
         val imdbViewingHistory = ImdbViewingHistory()
         val separatorChar = separatorString.get()[0]
-        imdbViewingHistory.importFromCsv(file.canonicalPath, separatorChar, recognizedCharset)
+        imdbViewingHistory.importFromCsv(file.canonicalPath, separatorChar, recognizedCharset, recognizedContentVersion)
         media.setAll(imdbViewingHistory.getTraktMediaList())
     }
 
@@ -50,10 +52,10 @@ class MainViewController : Controller() {
             filename.set(file.name)
             val linecount = try {
                 Files.lines(file.toPath()).count()
-            } catch (e : UncheckedIOException) {
+            } catch (e: UncheckedIOException) {
                 recognizedCharset = StandardCharsets.ISO_8859_1
                 Files.lines(file.toPath(), recognizedCharset).count()
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 println(e)
                 0L
             }
@@ -67,7 +69,16 @@ class MainViewController : Controller() {
             }
             filepreview.set(fileContentPreview.toString())
             guessCvsSeparatorChar(fileContentPreview)
+            identifyContentVersion(fileContentPreview)
             importDisabled.set(false)
+        }
+    }
+
+    private fun identifyContentVersion(fileContentPreview: StringBuffer) {
+        recognizedContentVersion = if (fileContentPreview.contains("(mins)") && fileContentPreview.contains("\\d\\d\\d\\d-\\d\\d-\\d\\d".toRegex())) {
+            ContentVersion.V2
+        } else {
+            ContentVersion.V1
         }
     }
 

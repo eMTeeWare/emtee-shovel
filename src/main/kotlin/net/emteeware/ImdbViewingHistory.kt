@@ -19,7 +19,7 @@ import java.util.function.Consumer
 class ImdbViewingHistory {
     private var viewingHistory = mutableListOf<ImportedMedia>()
 
-    fun importFromCsv(filename: String, separator: Char, recognizedCharset: Charset) {
+    fun importFromCsv(filename: String, separator: Char, recognizedCharset: Charset, contentVersion: ContentVersion) {
         // This method is adopted from a solution of user Xaxxus ( https://stackoverflow.com/users/9768031/xaxxus )
         // on Stack Overflow: https://stackoverflow.com/a/50278646
         // used under cc-by-sa license https://creativecommons.org/licenses/by-sa/3.0/
@@ -27,11 +27,15 @@ class ImdbViewingHistory {
         val mapper = CsvMapper().apply { registerModule(KotlinModule()) }
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
         val bootstrapSchema = CsvSchema.emptySchema().withHeader().withColumnSeparator(separator)
-        val objectReader = mapper.readerFor(ImportedMedia::class.java).with(bootstrapSchema)
+        val objectReader = if (contentVersion == ContentVersion.V1) {
+            mapper.readerFor(ImportedMediaV1::class.java).with(bootstrapSchema)
+        } else {
+            mapper.readerFor(ImportedMediaV2::class.java).with(bootstrapSchema)
+        }
 
         // bufferedReader returns wrong column headers with UTF-8 for some reason
         // e.g. ?Position instead of Position
-        if(recognizedCharset == StandardCharsets.ISO_8859_1) {
+        if (recognizedCharset == StandardCharsets.ISO_8859_1) {
             File(filename).inputStream().use { fileInputStream ->
                 val mappingIterator: MappingIterator<ImportedMedia> = objectReader.readValues(fileInputStream.bufferedReader(recognizedCharset))
                 mappingIterator.forEach { viewingHistory.add(it) }
