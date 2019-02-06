@@ -54,13 +54,23 @@ class MainView : View("My View") {
 
     private fun centerVBox(): Node {
         return vbox {
-
-            tableview(media) {
-                readonlyColumn("Date", Media::watchedAt)
-                readonlyColumn("Title", Media::title)
-                readonlyColumn("Type", Media::mediaType)
-                readonlyColumn("Rating", Media::yourRating)
-                columnResizePolicy = SmartResize.POLICY
+            hbox{
+                tableview(media) {
+                    readonlyColumn("Date", Media::watchedAt)
+                    readonlyColumn("Title", Media::title)
+                    readonlyColumn("Type", Media::mediaType)
+                    readonlyColumn("Rating", Media::yourRating)
+                    columnResizePolicy = SmartResize.POLICY
+                }
+                vbox {
+                    label("Selected media")
+                    label("Title: ")
+                    label("Type: ")
+                    label("Rating: ")
+                    label("Watched on: ")
+                    label("Watched at: ")
+                    label("Add to import batch? ")
+                }
             }
         }
     }
