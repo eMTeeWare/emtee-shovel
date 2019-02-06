@@ -21,7 +21,7 @@ class MainViewController : Controller() {
     val filepreview = SimpleStringProperty("No file selected")
     val importDisabled = SimpleBooleanProperty(true)
     val filename = SimpleStringProperty("No file selected")
-    var file = File.createTempFile("Hans", "Wurst")
+    lateinit var file : File
     val initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
     val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
     val lineCountString = SimpleStringProperty("No file selected")
