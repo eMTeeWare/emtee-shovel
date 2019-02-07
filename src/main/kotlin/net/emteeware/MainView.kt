@@ -54,7 +54,7 @@ class MainView : View("My View") {
 
     private fun centerVBox(): Node {
         return vbox {
-            hbox{
+            hbox {
                 tableview(media) {
                     readonlyColumn("Date", Media::watchedAt)
                     readonlyColumn("Title", Media::title)
@@ -64,12 +64,12 @@ class MainView : View("My View") {
                 }
                 form {
                     fieldset("Selected media") {
-                        field("Title: "){textfield {}}
-                        field("Type: "){textfield {}}
-                        field("Rating: "){textfield {}}
-                        field("Watched on: "){datepicker {}}
-                        field("Watched at: "){textfield {}}
-                        field("Included in import: "){checkbox {}}
+                        field("Title: ") { textfield {} }
+                        field("Type: ") { textfield {} }
+                        field("Rating: ") { textfield {} }
+                        field("Watched on: ") { datepicker {} }
+                        field("Watched at: ") { textfield {} }
+                        field("Included in import: ") { checkbox {} }
                     }
                 }
             }
