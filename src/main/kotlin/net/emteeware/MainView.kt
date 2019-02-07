@@ -62,14 +62,15 @@ class MainView : View("My View") {
                     readonlyColumn("Rating", Media::yourRating)
                     columnResizePolicy = SmartResize.POLICY
                 }
-                vbox {
-                    label("Selected media")
-                    label("Title: ")
-                    label("Type: ")
-                    label("Rating: ")
-                    label("Watched on: ")
-                    label("Watched at: ")
-                    label("Add to import batch? ")
+                form {
+                    fieldset("Selected media") {
+                        field("Title: "){textfield {}}
+                        field("Type: "){textfield {}}
+                        field("Rating: "){textfield {}}
+                        field("Watched on: "){datepicker {}}
+                        field("Watched at: "){textfield {}}
+                        field("Included in import: "){checkbox {}}
+                    }
                 }
             }
         }
