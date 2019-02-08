@@ -49,6 +49,12 @@ class Media(position: Int  = 0,
     val watchTimeSetProperty = SimpleBooleanProperty(this, "watchTimeSet", watchTimeSet)
     var watchTimeSet by watchTimeSetProperty
 
+    val watchHourProperty = SimpleIntegerProperty(this, "watchHour", watchTime.hour)
+    var watchHour by watchHourProperty
+
+    val watchMinuteProperty = SimpleIntegerProperty(this, "watchMinute", watchTime.minute)
+    var watchMinute by watchMinuteProperty
+
     override fun toString(): String {
         return title
     }

@@ -13,4 +13,6 @@ class MediaModel(var medium: Media) : ViewModel() {
     val addToImport = bind { medium.addToImportProperty }
     val watchTime = bind { medium.watchTimeProperty }
     val watchTimeSet = bind { medium.watchTimeSetProperty }
+    val watchHour = bind { medium.watchHourProperty }
+    val watchMinute = bind { medium.watchMinuteProperty }
 }

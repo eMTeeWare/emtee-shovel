@@ -69,7 +69,12 @@ class MainView : View("My View") {
                                 field("Type: ") { textfield(model.mediaType.toString()) }
                                 field("Rating: ") { textfield(model.yourRating) }
                                 field("Watched on: ") { datepicker(model.watchDate) }
-                                field("Watched at: ") { textfield(model.watchTime.toString()) }
+                                field("Watched at: ") {
+                                    hbox {
+                                        textfield(model.watchHour)
+                                        textfield(model.watchMinute)
+                                    }
+                                }
                                 field("Included in import: ") { checkbox(property = model.addToImport) }
                                 button("Save") {
                                     enableWhen(model.dirty)
