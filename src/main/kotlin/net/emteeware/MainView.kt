@@ -66,7 +66,7 @@ class MainView : View("My View") {
                         form {
                             fieldset("Selected media") {
                                 field("Title: ") { textfield(model.title) }
-                                field("Type: ") { textfield(model.mediaType.toString()) }
+                                field("Type: ") { combobox(model.mediaType, TraktMediaType.values().toList()) }
                                 field("Rating: ") { textfield(model.yourRating) }
                                 field("Watched on: ") { datepicker(model.watchDate) }
                                 field("Watched at: ") {
