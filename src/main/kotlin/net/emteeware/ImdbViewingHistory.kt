@@ -96,7 +96,7 @@ class ImdbViewingHistory {
         return Media(
                 position = importedMedia.Position,
                 imdbId = importedMedia.Const,
-                watchedAt = importedMedia.Created.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                watchDate = importedMedia.Created.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
                 title = importedMedia.Title,
                 imdbUrl = importedMedia.URL,
                 mediaType = importedMedia.TitleType,

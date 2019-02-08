@@ -4,13 +4,13 @@ import tornadofx.*
 
 class MediaModel(var medium: Media) : ViewModel() {
     val position = bind { medium.positionProperty }
-    val watchedAt = bind { medium.watchedAtProperty }
+    val watchDate = bind { medium.watchDateProperty }
     val title = bind { medium.titleProperty }
     val imdbId = bind { medium.imdbIdProperty }
     val imdbUrl = bind { medium.imdbUrlProperty }
     val mediaType = bind { medium.mediaTypeProperty }
     val yourRating = bind { medium.yourRatingProperty }
     val addToImport = bind { medium.addToImportProperty }
-    val watchedOn = bind { medium.watchedOnProperty }
+    val watchTime = bind { medium.watchTimeProperty }
     val watchTimeSet = bind { medium.watchTimeSetProperty }
 }

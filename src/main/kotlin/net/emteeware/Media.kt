@@ -11,19 +11,19 @@ import tornadofx.*
 
 class Media(position: Int  = 0,
             imdbId: String = "",
-            watchedAt: LocalDate = LocalDate.MIN,
+            watchDate: LocalDate = LocalDate.MIN,
             title: String = "",
             imdbUrl: URL = URL("http://127.0.0.1"),
             mediaType: TraktMediaType = TraktMediaType.UNDEFINED,
             yourRating: Int = 0,
             addToImport: Boolean = true,
-            watcheOn: LocalTime = LocalTime.MIDNIGHT,
+            watchTime: LocalTime = LocalTime.MIDNIGHT,
             watchTimeSet: Boolean = false) {
     val positionProperty = SimpleIntegerProperty(this, "position", position)
     var position by positionProperty
 
-    val watchedAtProperty = SimpleObjectProperty<LocalDate>(this, "watchedAt", watchedAt)
-    var watchedAt by watchedAtProperty
+    val watchDateProperty = SimpleObjectProperty<LocalDate>(this, "watchDate", watchDate)
+    var watchDate by watchDateProperty
 
     val titleProperty = SimpleStringProperty(this, "title", title)
     var title by titleProperty
@@ -43,8 +43,8 @@ class Media(position: Int  = 0,
     val addToImportProperty = SimpleBooleanProperty(this, "addToImport", addToImport)
     var addToImport by addToImportProperty
 
-    val watchedOnProperty = SimpleObjectProperty<LocalTime>(this, "watchedOn", watcheOn)
-    var watcheOn by watchedOnProperty
+    val watchTimeProperty = SimpleObjectProperty<LocalTime>(this, "watchTime", watchTime)
+    var watchTime by watchTimeProperty
 
     val watchTimeSetProperty = SimpleBooleanProperty(this, "watchTimeSet", watchTimeSet)
     var watchTimeSet by watchTimeSetProperty

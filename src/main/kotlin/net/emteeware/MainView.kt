@@ -52,7 +52,7 @@ class MainView : View("My View") {
                 vbox {
                     hbox {
                         tableview(media) {
-                            column("Date", Media::watchedAtProperty)
+                            column("Date", Media::watchDateProperty)
                             column("Title", Media::titleProperty)
                             column("Type", Media::mediaTypeProperty)
                             column("Rating", Media::yourRatingProperty)
@@ -68,8 +68,8 @@ class MainView : View("My View") {
                                 field("Title: ") { textfield(model.title) }
                                 field("Type: ") { textfield(model.mediaType.toString()) }
                                 field("Rating: ") { textfield(model.yourRating) }
-                                field("Watched on: ") { datepicker(model.watchedAt) }
-                                field("Watched at: ") { textfield(model.watchedOn.toString()) }
+                                field("Watched on: ") { datepicker(model.watchDate) }
+                                field("Watched at: ") { textfield(model.watchTime.toString()) }
                                 field("Included in import: ") { checkbox(property = model.addToImport) }
                                 button("Save") {
                                     enableWhen(model.dirty)
