@@ -71,8 +71,8 @@ class MainView : View("My View") {
                                 field("Watched on: ") { datepicker(model.watchDate) }
                                 field("Watched at: ") {
                                     hbox {
-                                        textfield(model.watchHour)
-                                        textfield(model.watchMinute)
+                                        textfield(model.watchHour) { prefColumnCount = 2 }
+                                        textfield(model.watchMinute) { prefColumnCount = 2 }
                                     }
                                 }
                                 field("Included in import: ") { checkbox(property = model.addToImport) }
