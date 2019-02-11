@@ -48,6 +48,10 @@ class ImdbViewingHistory {
         }
     }
 
+    fun getMinimumWatchDate(): LocalDate {
+        return viewingHistory.stream().min{ o1, o2 -> o1.Created.compareTo(o2.Created) }.get().Created.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    }
+
     fun print() {
         viewingHistory.forEach(System.out::println)
     }

@@ -1,6 +1,7 @@
 package net.emteeware
 
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -10,6 +11,7 @@ import java.io.File
 import java.io.UncheckedIOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.time.LocalDate
 import java.util.prefs.Preferences
 
 private const val PREFS_LAST_USED_DIR_KEY = "lastUsedDirectory"
@@ -26,9 +28,10 @@ class MainViewController : Controller() {
     val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
     val lineCountString = SimpleStringProperty("No file selected")
     var separatorString = SimpleStringProperty(";")
+    lateinit var listViewStartDate : SimpleObjectProperty<LocalDate>
 
     fun getMediaList(): ObservableList<Media> {
-        return media
+        return media.filtered { m -> m.watchDate.isAfter(listViewStartDate.value.minusDays(1)) }
     }
 
     private var recognizedCharset = StandardCharsets.UTF_8
@@ -39,6 +42,7 @@ class MainViewController : Controller() {
         val imdbViewingHistory = ImdbViewingHistory()
         val separatorChar = separatorString.get()[0]
         imdbViewingHistory.importFromCsv(file.canonicalPath, separatorChar, recognizedCharset, recognizedContentVersion)
+        listViewStartDate = SimpleObjectProperty(imdbViewingHistory.getMinimumWatchDate())
         media.setAll(imdbViewingHistory.getTraktMediaList())
     }
 
