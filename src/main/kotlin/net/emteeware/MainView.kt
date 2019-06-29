@@ -61,7 +61,7 @@ class MainView : View("My View") {
                                 medium = selectedMedia ?: Media()
                                 println("rebindOnChange: $medium")
                             }
-                            onSelectionChange { selmed -> println("onChange: $selmed") }
+                            onSelectionChange { selectedMedia -> println("onChange: $selectedMedia") }
                         }
                         form {
                             fieldset("Selected media") {
