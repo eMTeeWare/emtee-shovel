@@ -23,12 +23,12 @@ class MainViewController : Controller() {
     val filepreview = SimpleStringProperty("No file selected")
     val importDisabled = SimpleBooleanProperty(true)
     val filename = SimpleStringProperty("No file selected")
-    lateinit var file : File
+    lateinit var file: File
     val initialDirectory = File(prefs[PREFS_LAST_USED_DIR_KEY, System.getProperty("user.home")])
     val filters = arrayOf(FileChooser.ExtensionFilter("CSV files", "*.csv"))
     val lineCountString = SimpleStringProperty("No file selected")
     var separatorString = SimpleStringProperty(";")
-    lateinit var listViewStartDate : SimpleObjectProperty<LocalDate>
+    lateinit var listViewStartDate: SimpleObjectProperty<LocalDate>
 
     fun getMediaList(): ObservableList<Media> {
         return media.filtered { m -> m.watchDate.isAfter(listViewStartDate.value.minusDays(1)) }
