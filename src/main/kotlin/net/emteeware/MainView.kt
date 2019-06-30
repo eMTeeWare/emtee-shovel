@@ -1,8 +1,17 @@
 package net.emteeware
 
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventHandler
+import javafx.geometry.Orientation
 import javafx.scene.layout.BorderPane
+import javafx.scene.paint.Color
+import org.controlsfx.control.RangeSlider
 import tornadofx.*
+import tornadofx.controlsfx.rangeslider
+import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 
 class MainView : View("My View") {
@@ -48,8 +57,23 @@ class MainView : View("My View") {
                     }
                 }
             }
+            var lowValue = SimpleDoubleProperty(0.0)
+            var highValue = SimpleDoubleProperty((Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)).nanos.toDouble()))
+
+            var rangeSlider by singleAssign<RangeSlider>()
             center {
                 vbox {
+                    pane {
+                        rangeslider(lowValue.value, highValue.value, 0.0, 1.0) {
+                            useMaxWidth = true
+                            isShowTickMarks = true
+                            isShowTickLabels = true
+
+                        }
+                        style {
+                            backgroundColor += Color.RED
+                        }
+                    }
                     hbox {
                         tableview(media) {
                             column("Date", Media::watchDateProperty)
@@ -71,7 +95,7 @@ class MainView : View("My View") {
                                 field("Watched on: ") { datepicker(model.watchDate) }
                                 field("Watched at: ") {
                                     hbox {
-                                        spinner(0,23, property = model.watchHour, editable = true) { prefWidth = 60.0 }
+                                        spinner(0, 23, property = model.watchHour, editable = true) { prefWidth = 60.0 }
                                         spinner(0, 59, property = model.watchMinute, editable = true) { prefWidth = 60.0 }
                                     }
                                 }

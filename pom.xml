@@ -79,6 +79,11 @@
             <artifactId>tornadofx</artifactId>
             <version>${tornadofx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>no.tornado</groupId>
+            <artifactId>tornadofx-controlsfx</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
