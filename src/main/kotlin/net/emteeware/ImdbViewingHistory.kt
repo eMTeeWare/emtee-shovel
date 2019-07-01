@@ -106,4 +106,8 @@ class ImdbViewingHistory {
                 mediaType = importedMedia.TitleType,
                 yourRating = importedMedia.YourRating)
     }
+
+    fun getMaximumWatchDate(): LocalDate {
+        return viewingHistory.stream().max{ o1, o2 -> o1.Created.compareTo(o2.Created) }.get().Created.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    }
 }

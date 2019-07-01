@@ -1,8 +1,6 @@
 package net.emteeware
 
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.*
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
@@ -12,6 +10,7 @@ import java.io.UncheckedIOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import java.util.prefs.Preferences
 
 private const val PREFS_LAST_USED_DIR_KEY = "lastUsedDirectory"
@@ -29,13 +28,17 @@ class MainViewController : Controller() {
     val lineCountString = SimpleStringProperty("No file selected")
     var separatorString = SimpleStringProperty(";")
     lateinit var listViewStartDate: SimpleObjectProperty<LocalDate>
+    lateinit var listViewEndDate: SimpleObjectProperty<LocalDate>
+    var firstDay = SimpleDoubleProperty(0.0)
+    var lastDay = SimpleDoubleProperty(100.0)
+
+    var coveredDays = SimpleLongProperty(0)
 
     fun getMediaList(): ObservableList<Media> {
         return media.filtered { m -> m.watchDate.isAfter(listViewStartDate.value.minusDays(1)) }
     }
 
     private var recognizedCharset = StandardCharsets.UTF_8
-
     private lateinit var recognizedContentVersion: ContentVersion
 
     fun importData(file: File) {
@@ -43,6 +46,10 @@ class MainViewController : Controller() {
         val separatorChar = separatorString.get()[0]
         imdbViewingHistory.importFromCsv(file.canonicalPath, separatorChar, recognizedCharset, recognizedContentVersion)
         listViewStartDate = SimpleObjectProperty(imdbViewingHistory.getMinimumWatchDate())
+        listViewEndDate = SimpleObjectProperty(imdbViewingHistory.getMaximumWatchDate())
+        coveredDays.set(ChronoUnit.DAYS.between(listViewStartDate.value, listViewEndDate.value))
+        lastDay.set(coveredDays.doubleValue())
+        println("Loaded file covers ${coveredDays.value} days.")
         media.setAll(imdbViewingHistory.getTraktMediaList())
     }
 

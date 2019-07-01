@@ -12,6 +12,8 @@ import tornadofx.controlsfx.rangeslider
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
+import kotlin.math.absoluteValue
 
 
 class MainView : View("My View") {
@@ -57,21 +59,18 @@ class MainView : View("My View") {
                     }
                 }
             }
-            var lowValue = SimpleDoubleProperty(0.0)
-            var highValue = SimpleDoubleProperty((Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)).nanos.toDouble()))
-
-            var rangeSlider by singleAssign<RangeSlider>()
             center {
                 vbox {
-                    pane {
-                        rangeslider(lowValue.value, highValue.value, 0.0, 1.0) {
-                            useMaxWidth = true
-                            isShowTickMarks = true
-                            isShowTickLabels = true
+                    hbox {
 
-                        }
-                        style {
-                            backgroundColor += Color.RED
+                        label("Days covered by list: ")
+                        textfield().bind(controller.coveredDays)
+                        pane {
+                            rangeslider(controller.firstDay, controller.lastDay, 0.0, 2000.0) {
+                                useMaxWidth = true
+                                isShowTickMarks = true
+                                isShowTickLabels = true
+                            }
                         }
                     }
                     hbox {
