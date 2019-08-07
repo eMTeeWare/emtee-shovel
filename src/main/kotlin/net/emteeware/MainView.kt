@@ -1,19 +1,9 @@
 package net.emteeware
 
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventHandler
-import javafx.geometry.Orientation
 import javafx.scene.layout.BorderPane
-import javafx.scene.paint.Color
-import org.controlsfx.control.RangeSlider
 import tornadofx.*
 import tornadofx.controlsfx.rangeslider
-import java.sql.Timestamp
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
-import kotlin.math.absoluteValue
 
 
 class MainView : View("My View") {
@@ -22,7 +12,7 @@ class MainView : View("My View") {
     val model = MediaModel(Media())
 
     override val root = BorderPane()
-    private var media = controller.getMediaList()
+    private var media = controller.mediaDisplayList
 
     init {
         with(root) {
@@ -72,6 +62,7 @@ class MainView : View("My View") {
                                 isShowTickLabels = true
                             }
                         }
+                        button("Set Start Date").action { controller.setStartDate() }
                     }
                     hbox {
                         tableview(media) {

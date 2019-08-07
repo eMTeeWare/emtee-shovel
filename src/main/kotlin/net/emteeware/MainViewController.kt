@@ -10,6 +10,7 @@ import java.io.UncheckedIOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.time.LocalDate
+import java.time.Month
 import java.time.temporal.ChronoUnit
 import java.util.prefs.Preferences
 
@@ -19,6 +20,7 @@ private const val HEADER_ROW_COUNT = 1
 class MainViewController : Controller() {
     private val prefs = Preferences.userRoot().node(this.javaClass.name)
     val media = FXCollections.observableArrayList<Media>()
+    val displayMedia = FXCollections.observableArrayList<Media>()
     val filepreview = SimpleStringProperty("No file selected")
     val importDisabled = SimpleBooleanProperty(true)
     val filename = SimpleStringProperty("No file selected")
@@ -33,6 +35,8 @@ class MainViewController : Controller() {
     var lastDay = SimpleDoubleProperty(100.0)
 
     var coveredDays = SimpleLongProperty(0)
+
+    val mediaDisplayList = SimpleListProperty(displayMedia)
 
     fun getMediaList(): ObservableList<Media> {
         return media.filtered { m -> m.watchDate.isAfter(listViewStartDate.value.minusDays(1)) }
@@ -51,6 +55,7 @@ class MainViewController : Controller() {
         lastDay.set(coveredDays.doubleValue())
         println("Loaded file covers ${coveredDays.value} days.")
         media.setAll(imdbViewingHistory.getTraktMediaList())
+        displayMedia.setAll(media)
     }
 
     private fun updateInitialDirectory() {
@@ -98,5 +103,10 @@ class MainViewController : Controller() {
         if (firstline.contains(',') && !firstline.contains(';')) {
             separatorString.set(",")
         }
+    }
+
+    fun setStartDate() {
+        listViewStartDate.set(LocalDate.of(2017, Month.APRIL, 1))
+        displayMedia.setAll(media.filtered { m -> m.watchDate.isAfter(listViewStartDate.value.minusDays(1)) })
     }
 }
