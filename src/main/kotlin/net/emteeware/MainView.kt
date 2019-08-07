@@ -63,6 +63,7 @@ class MainView : View("My View") {
                             }
                         }
                         button("Set Start Date").action { controller.setStartDate() }
+                        button("Reset Start Date").action { controller.resetStartDate() }
                     }
                     hbox {
                         tableview(media) {

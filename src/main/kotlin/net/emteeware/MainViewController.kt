@@ -113,4 +113,8 @@ class MainViewController : Controller() {
     fun setStartDate() {
         listViewStartDate.set(LocalDate.of(2017, Month.APRIL, 1))
     }
+
+    fun resetStartDate() {
+        listViewStartDate.set(media.minBy { i -> i.watchDate }?.watchDate)
+    }
 }
