@@ -50,12 +50,17 @@ class MainViewController : Controller() {
         val separatorChar = separatorString.get()[0]
         imdbViewingHistory.importFromCsv(file.canonicalPath, separatorChar, recognizedCharset, recognizedContentVersion)
         listViewStartDate = SimpleObjectProperty(imdbViewingHistory.getMinimumWatchDate())
+        listViewStartDate.onChange { applyFilters() }
         listViewEndDate = SimpleObjectProperty(imdbViewingHistory.getMaximumWatchDate())
         coveredDays.set(ChronoUnit.DAYS.between(listViewStartDate.value, listViewEndDate.value))
         lastDay.set(coveredDays.doubleValue())
         println("Loaded file covers ${coveredDays.value} days.")
         media.setAll(imdbViewingHistory.getTraktMediaList())
         displayMedia.setAll(media)
+    }
+
+    private fun applyFilters() {
+        displayMedia.setAll(media.filtered { m -> m.watchDate.isAfter(listViewStartDate.value.minusDays(1)) })
     }
 
     private fun updateInitialDirectory() {
@@ -107,6 +112,5 @@ class MainViewController : Controller() {
 
     fun setStartDate() {
         listViewStartDate.set(LocalDate.of(2017, Month.APRIL, 1))
-        displayMedia.setAll(media.filtered { m -> m.watchDate.isAfter(listViewStartDate.value.minusDays(1)) })
     }
 }
