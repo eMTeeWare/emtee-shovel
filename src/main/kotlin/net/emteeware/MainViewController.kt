@@ -58,10 +58,14 @@ class MainViewController : Controller() {
         media.setAll(imdbViewingHistory.getTraktMediaList())
         displayMedia.setAll(media)
         firstDay.onChange { applyFilters() }
+        lastDay.onChange { applyFilters() }
     }
 
     private fun applyFilters() {
-        displayMedia.setAll(media.filtered { m -> m.watchDate.isAfter(listViewStartDate.value.plusDays(firstDay.longValue()).minusDays(1)) })
+        displayMedia.setAll(media.filtered { m ->
+                (m.watchDate.isAfter(listViewStartDate.value.plusDays(firstDay.longValue()).minusDays(1))) &&
+                (m.watchDate.isBefore(listViewStartDate.value.plusDays(lastDay.longValue()).minusDays(1)))
+        })
     }
 
     private fun updateInitialDirectory() {
